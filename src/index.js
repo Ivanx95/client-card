@@ -7,7 +7,7 @@ const appName= "Client Card";
 
 const express = require("express");
 const app = express();
-const port= 8080;
+const port= 80;
 console.log("Starting  application");
 
 const dataSource = require("./db/model/DB.js");
