@@ -3,11 +3,15 @@ const bodyParser = require('body-parser')
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
+const fs = require('fs');
+const https = require('https');
+
+
 const appName= "Client Card";
 
 const express = require("express");
 const app = express();
-const port= 80;
+const port= 443;
 console.log("Starting  application");
 
 const dataSource = require("./db/model/DB.js");
@@ -97,4 +101,12 @@ app.get("/users", (req, res) => {
 
 app.use(express.static("public"));
 app.use(apiRouter);
-app.listen(port, () => console.log(`${appName} on port ${port}`));
+
+
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(port, function () {
+  console.log(`Example app listening on port ${port}! Go to https://localhost:3000/`)
+})
