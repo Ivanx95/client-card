@@ -36,11 +36,11 @@ export default class CardComponent extends BaseComponent{
 		let width, height;
 		width = height = this.qRSizes(pageWidth);
 	
-		let qRCode  = this.mapColor[card.brand.brandColor]||"#000000";
+		let qrColor  = this.mapColor[card.brand.brandColor]||"#000000";
   		this.qrcode = new QRCode(this.uiElements.qrComponent.el, {
 						width : width,
 						height : height,
-						colorDark: qRCode,
+						colorDark: qrColor,
 						logo: card.brand.logoURL
 					});
   		
