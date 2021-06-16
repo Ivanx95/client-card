@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+	head
+	meta(charset="UTF-8")
+	meta(name="viewport",content="width=device-width, initial-scale=1.0")
+	title Client Card
+	link(rel="stylesheet",href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+	link(rel="stylesheet" href="/main.css")
+	meta(name="viewport", content="width=device-width, initial-scale=1")
+
+body
+	div(class="adBanner" id="adTester")
+
+	section(class="section")
+		nav(class="navbar" role="navigation" aria-label="main navigation")
+			div(class="navbar-brand")
+				a(class="navbar-item",href="https://bulma.io")
+					img(id="logo" src="https://bulma.io/images/bulma-logo.png" width="112" height="28")
+
+			a(role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample")
+				span(aria-hidden="true")
+				span(aria-hidden="true")
+				span(aria-hidden="true")
+
+			div(id="navbarBasicExample" class="navbar-menu")
+				div(class="navbar-start")
+					a(class="navbar-item") Home
+
+	div(id="greetingComponent-ui")
+	div(id="mainModule-ui")
+		div(id="router")
+
+	script(type='text/javascript').
+		window.onerror = function (e) {
+			console.log('Error: ', e);
+			alert(e);
+		};
+	
+
+	script(type="text/javascript" src="vendor/qrReader.js")
+	script(type="module" src="administrator.js")

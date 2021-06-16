@@ -12,6 +12,7 @@ console.log(`DB name: ${dbName}`);
 const dataSource = new Sequelize(dbName,dbUser, dbPwd, 
 	                            { host: dbHost,
 								  dialect: 'mysql',
+								  logging: false,
 								  pool: {
 								    max: 5,
 								    min: 0,

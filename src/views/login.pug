@@ -1,0 +1,43 @@
+doctype html
+html(lang="en")
+	head
+	meta(charset="UTF-8")
+	meta(name="viewport",content="width=device-width, initial-scale=1.0")
+	title Client Card
+	link(rel="stylesheet",href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+	link(rel="stylesheet" href="/main.css")
+	meta(name="viewport", content="width=device-width, initial-scale=1")
+
+body
+
+	section(class="section")
+		div(class="container")
+			div(class="columns")
+				div(class="column")
+				div(class="column is-four-fifths") 
+					div(class="hero")
+						div(class="container")
+							form(action="/loginuser" method="post")
+								div(class="field")
+									label(class="label") Correo
+									div(class="control")
+										input(name="email", class="input" type="text" placeholder="Ingrese su correo")
+
+								div(class="field")
+									label(class="label") Contraseña
+									div(class="control")
+										input(name="password", class="input" type="password")
+								div(class="field is-grouped")
+									div(class="control")
+										button(class="button is-link").
+											Iniciar Sesión
+					
+				div(class="column")
+	
+
+	footer(class="footer")
+		div(class="content has-text-centered")
+			p Client Card
+			p Made with love by Jaisen Ivan Larralde Ortiz
+			span(class="icon")
+				i(class="fas fa-home")
