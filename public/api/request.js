@@ -1,5 +1,5 @@
 
-const path = "/cards";
+const path = "/api/cards";
 
 
 function getCards(callBack){
@@ -51,7 +51,7 @@ function credit(opID, uuid,totalSale,callBack){
     	headers: headers
 	};
 
-	fetch(`/transactions/credit/${uuid}`,options)
+	fetch(`/api/transactions/credit/${uuid}`,options)
 	.then(response => response.json())
 	.then((data) => {
 		callBack(data);

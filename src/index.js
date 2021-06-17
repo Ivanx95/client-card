@@ -30,64 +30,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({secret: "1234"}));
 app.use(express.static("public"));
-app.use(apiRouter);
+app.use("/api", apiRouter);
 
-
-function switchSession(req, res, user){
-    Logger.log({
-      level: 'info',
-      message: `Type of user: ${user.typeOfUser}`
-    });
-     switch(user.typeOfUser){
-        default:
-        case 'CLIENT':
-          res.redirect('/index');
-        break;
-        case 'BUSINESS':
-          res.redirect('/admin');
-        break;
-  }
-}
-
-app.get("/", (req,res)=>{
-  Logger.log({
-      level: 'info',
-      message: "Request on /"
-    });
-
-  if(!req.session.user|| req.session.user == undefined){
-    
-    Logger.log({
-      level: 'info',
-      message: "No user session found"
-    });
-
-    res.redirect("/login");
-    return;
-  }
-  Logger.log({
-      level: 'info',
-      message: "User session found"
-  });
-  
-  switchSession(req,res, req.session.user);
-});
 
 app.get("/login", (req, res)=>{
-  Logger.log({
-      level: 'info',
-      message: "Request on /login`"
-  });
-  if(!req.session.user){
-    Logger.log({
-      level: 'info',
-      message: "No user session found"
-    });
-    res.render('login.pug', {});
+  if(req.session.user){
+    switchSession(req,res, req.session.user);
     return;
   }
-  switchSession(req,res, req.session.user);
+  res.render('login.pug', {});
 });
+
+
+app.get("/users", (req, res) => {
+  dataSource.models.User.findAll()
+    .then((users)=>{
+        res.status(200).send(users);
+    })
+ 
+});
+
 
 app.post("/loginuser",(req,res)=>{
   
@@ -115,6 +77,48 @@ app.post("/loginuser",(req,res)=>{
 });
 
 
+app.use((req,res, next)=>{
+  Logger.log({level:"info", message: `Request on ${req.originalUrl}`});
+
+  if(!req.session.user|| req.session.user == undefined){
+    
+    Logger.log({
+      level: 'info',
+      message: "No user session found"
+    });
+
+    res.redirect("/login");
+    return;
+  }
+  Logger.log({
+      level: 'info',
+      message: "User session found"
+  });
+  
+  next();
+});
+
+function switchSession(req, res, user){
+    Logger.log({
+      level: 'info',
+      message: `Type of user: ${user.typeOfUser}`
+    });
+     switch(user.typeOfUser){
+        default:
+        case 'CLIENT':
+          res.redirect('/index');
+        break;
+        case 'BUSINESS':
+          res.redirect('/admin');
+        break;
+  }
+}
+
+app.get("/", (req,res)=>{
+  switchSession(req,res, req.session.user);
+});
+
+
 app.get("/index", (req, res)=>{
   res.render('index.pug', {});
 })
@@ -123,15 +127,6 @@ app.get("/admin", (req, res)=>{
   res.render('admin.pug', {});
 })
 
-
-
-app.get("/users", (req, res) => {
-  dataSource.models.User.findAll()
-    .then((users)=>{
-        res.status(200).send(users);
-    })
- 
-});
 
 
 let env =process.env.ENV;
