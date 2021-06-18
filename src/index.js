@@ -71,10 +71,6 @@ app.get("/users", (req, res) => {
  
 });
 
-app.get("/index", (req, res)=>{
-  res.render('index.pug', {title:"Point Card"});
-})
-
 
 app.post("/loginuser",(req,res)=>{
   
@@ -148,6 +144,10 @@ app.get("/", (req,res)=>{
   switchSession(req,res, req.session.user);
 });
 
+
+app.get("/index", (req, res)=>{
+  res.render('index.pug', {title:"Point Card"});
+})
 
 
 app.get("/admin", (req, res)=>{
