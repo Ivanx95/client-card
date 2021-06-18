@@ -76,7 +76,7 @@ app.post("/loginuser",(req,res)=>{
   
   Logger.log({
     level:"info",
-    message: "Searching for user"
+    message: `Searching for user ${req.body.password}`
   });
 
    User.findAll({limit: 1,
