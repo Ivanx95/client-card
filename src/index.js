@@ -127,8 +127,7 @@ app.use((req,res, next)=>{
 
 function switchSession(req, res, user){
    
-    let typeOfUserValue = typeOfUserMap.find((i)=>i.name===user.typeOfUser);
-
+    let typeOfUserValue = typeOfUserMap.find((i)=>i.id==user.typeOfUser);
     Logger.log({
       level: 'info',
       message: `Type of user: ${typeOfUserValue.name}`
