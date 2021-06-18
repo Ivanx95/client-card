@@ -12,7 +12,7 @@ const appName= "Client Card";
 
 const express = require("express");
 const app = express();
-
+const typeOfUserMap = [{id:"1",name:"CLIENT"},{id:"2",name:"BUSINESS"}];
 dotenv.config();
 
 Logger.log({level:"info", message: "Starting application"});
@@ -41,6 +41,27 @@ app.get("/login", (req, res)=>{
   res.render('login.pug', {});
 });
 
+app.get("/logout", (req, res)=>{
+  if(!req.session){
+    res.redirect("/");
+    return;
+  }
+  req.session.destroy(function(err) {
+    if(err){
+       Logger.log({
+        level:"error",
+        message: "Error happended destroying the session"
+      });
+      Logger.log({
+        level:"error",
+        message: err
+      });
+    }
+  });
+  
+  res.render('login.pug', {});
+});
+
 
 app.get("/users", (req, res) => {
   dataSource.models.User.findAll()
@@ -50,10 +71,15 @@ app.get("/users", (req, res) => {
  
 });
 
+app.get("/index", (req, res)=>{
+  res.render('index.pug', {title:"Point Card"});
+})
+
 
 app.post("/loginuser",(req,res)=>{
   
   Logger.log({
+    level:"info",
     message: "Searching for user"
   });
    User.findAll({limit: 1,
@@ -99,11 +125,15 @@ app.use((req,res, next)=>{
 });
 
 function switchSession(req, res, user){
+   
+    let typeOfUserValue = typeOfUserMap.find((i)=>i.name===user.typeOfUser);
+
     Logger.log({
       level: 'info',
-      message: `Type of user: ${user.typeOfUser}`
+      message: `Type of user: ${typeOfUserValue.name}`
     });
-     switch(user.typeOfUser){
+
+    switch(typeOfUserValue.name){
         default:
         case 'CLIENT':
           res.redirect('/index');
@@ -119,12 +149,9 @@ app.get("/", (req,res)=>{
 });
 
 
-app.get("/index", (req, res)=>{
-  res.render('index.pug', {});
-})
 
 app.get("/admin", (req, res)=>{
-  res.render('admin.pug', {});
+  res.render('admin.pug', {title:"Point card"});
 })
 
 
