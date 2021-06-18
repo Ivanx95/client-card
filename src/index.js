@@ -78,10 +78,15 @@ app.post("/loginuser",(req,res)=>{
     level:"info",
     message: "Searching for user"
   });
+
    User.findAll({limit: 1,
     where:{email:req.body.email, password: req.body.password}})
    .then(users=>{
      if(!users){
+       Logger.log({
+        level:"info",
+        message: "No user found"
+      });
        res.redirect("/login")
        return;
      }
