@@ -3,10 +3,15 @@ import GreetingComponent from "./components/greetingComponent.js"
 import CardComponent from "./components/cardFiller.js"
 import tester from "./components/adBlockTester.js"
 import escape from "./utils/stringUtils.js";
-
+import WebSocketInstance from "./messaging/Socket.js"
+import removeAllChildNodes from "./utils/DomUtils.js";
 
 const componentsArray = [];
+const currentUserId = 1;
 let  cardComponent;
+var  cardStore = [];
+
+const store = {};
 
 function handleError(error){
 	let errorContainer = document.createElement("div");
@@ -32,9 +37,21 @@ function configureComponents(){
 	componentsArray.push(new GreetingComponent(greetingContainer));
 	componentsArray.push(cardComponent);
 
+	const socket = WebSocketInstance.getInstance();
+	socket.on(`send/${currentUserId}`, (arg)=>{
+		let card = JSON.parse(arg); 
+		console.log(card); 
+		let cards = store.cards;
+		let index = cards.map((c)=>c.cardId).indexOf(card.cardId);
+		cards[index] = card;
+		store.cards = cards;
+	  	cardComponent.createCardElement(card);
+    });
 } 
 
 function app(){
+ 
+  
   document.cookie = '{"user":{"name":"Ivan"}}';
   console.log(document.cookie);
   configureComponents(); 
@@ -46,10 +63,11 @@ function app(){
 
   const cardHolder = document.getElementById("card-table");
 
-	
-  requests.getCards(cards =>
+  
+  	
+   
+   requests.getCardsByClient(currentUserId,cards =>{
    	cards.forEach(cardEl=>{
-
    		let row = document.createElement('div');
    		row.className = ["columns"];
 
@@ -65,12 +83,19 @@ function app(){
 		row1.appendChild(brandButton);
 
 		row.appendChild(row1);
+		row.cardId = cardEl.cardId;
 		row.addEventListener("click",(event)=>{
-			cardComponent.createCardElement(cardEl);
+
+			let targetCard= store.cards.find(card=>{
+				return card.cardId == row.cardId;
+			})
+			cardComponent.createCardElement(targetCard);
 		});
 
 		cardHolder.appendChild(row);
-   }));
+	  });
+   	store.cards = cards;
+   });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

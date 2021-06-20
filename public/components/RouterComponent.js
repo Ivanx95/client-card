@@ -3,6 +3,7 @@ import BaseComponent from "./BaseComponent.js";
 import FormScannerComponent from "./FormScannerComponent.js";
 import CardActionsComponent from "./CardActionsComponent.js"
 import QrReaderComponent from "./qrReaderComponent.js"
+import removeAllChildNodes from "../utils/DomUtils.js";
 
 class DynamicClass {
     constructor (klass, ...opts) {
@@ -10,11 +11,7 @@ class DynamicClass {
     }
 }
 
-function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-}
+
 
 export default class RouterComponent{
 	constructor(container) {

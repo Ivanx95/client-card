@@ -11,6 +11,15 @@ function getCards(callBack){
 		});
 }
 
+function getCardsByClient(userId,callBack){
+	fetch(`${path}/owner/${userId}`)
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		callBack(data);
+		});
+}
+
 
 function findCards(uuid,opID,callBack){
 
@@ -60,6 +69,6 @@ function credit(opID, uuid,totalSale,callBack){
 
 
 
-export default {getCards, findCards,credit};
+export default {getCards, findCards,credit,getCardsByClient};
 
  

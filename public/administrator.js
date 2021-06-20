@@ -25,6 +25,7 @@ function configureComponents(){
     el.init();
   });
   
+  
   //cardActionsComp.getCreditBtn().addEventListener('click',()=>{
     /*requests.credit(2,uuidCard,20,()=>{
         console.log("Credit gave it successfully");
@@ -34,6 +35,8 @@ function configureComponents(){
 
   
 } 
+
+
 
 
 configureComponents();

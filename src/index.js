@@ -1,19 +1,15 @@
+const Logger = require("./logger/Logger.js");
 const apiRouter = require("./api/cardController.js");
 const bodyParser = require('body-parser')
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const dotenv = require('dotenv');
-const Logger = require("./logger/Logger.js");
-
-const fs = require('fs');
-const https = require('https');
-
+const {httpServer, app, startApp} = require("./server.js");
+const express = require("express");
 const appName= "Client Card";
 
-const express = require("express");
-const app = express();
-const typeOfUserMap = [{id:"1",name:"CLIENT"},{id:"2",name:"BUSINESS"}];
-dotenv.config();
+
+
+
 
 Logger.log({level:"info", message: "Starting application"});
 
@@ -29,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cookieParser());
 app.use(session({secret: "1234"}));
-app.use(express.static("public"));
+
 app.use("/api", apiRouter);
 
 
@@ -40,6 +36,12 @@ app.get("/login", (req, res)=>{
   }
   res.render('login.pug', {});
 });
+
+
+app.get("/admin", (req, res)=>{
+  res.render('admin.pug', {title:"Point card"});
+})
+
 
 app.get("/logout", (req, res)=>{
   if(!req.session){
@@ -82,7 +84,7 @@ app.post("/loginuser",(req,res)=>{
    User.findAll({limit: 1,
     where:{email:req.body.email, password: req.body.password}})
    .then(users=>{
-     if(!users){
+     if(!users|| users.length <1){
        Logger.log({
         level:"info",
         message: "No user found"
@@ -92,10 +94,16 @@ app.post("/loginuser",(req,res)=>{
      }
 
     Logger.log({
+      level:"info",
       message: "User authenticated agains db"
     });
+    
     let user = users[0].dataValues;
 
+    Logger.log({
+      level:"info",
+      message: JSON.stringify(user)
+    });
     let newUser = {name:user.name, typeOfUser: user.typeOfUser};
     req.session.user = newUser;
 
@@ -127,13 +135,12 @@ app.use((req,res, next)=>{
 
 function switchSession(req, res, user){
    
-    let typeOfUserValue = typeOfUserMap.find((i)=>i.id==user.typeOfUser);
     Logger.log({
       level: 'info',
-      message: `Type of user: ${typeOfUserValue.name}`
+      message: `Type of user: ${user.typeOfUser}`
     });
 
-    switch(typeOfUserValue.name){
+    switch(user.typeOfUser){
         default:
         case 'CLIENT':
           res.redirect('/index');
@@ -154,28 +161,6 @@ app.get("/index", (req, res)=>{
 })
 
 
-app.get("/admin", (req, res)=>{
-  res.render('admin.pug', {title:"Point card"});
-})
 
-
-
-let env =process.env.ENV;
-var port= 443;
-
-const afterAppStarted = ()=>{
-  Logger.log({level:"info", message: `Example app listening on port ${port}! Go to https://localhost:3000/`});
-};
-
-if(env=="DEV"){
-  port = 8080;
-  app.listen(port, afterAppStarted);
-//prod
-}else{
-  https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-  }, app)
-  .listen(port, afterAppStarted);
-}
+startApp();
 

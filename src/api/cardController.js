@@ -1,12 +1,12 @@
-
+const Logger = require("../logger/Logger.js");
 const dataSource = require("../db/model/DB.js");
-
+const {wsServer} = require("../server.js");
 const Card= dataSource.models.Card;
 
 const path ="/cards";
 const express = require("express");
 const apiRouter = express.Router();
-const cards = require("../db/cards.js");
+
 
 const findCardByUUID = (cardId, operatorID)=>{
 	return Card.findAll({
@@ -23,6 +23,28 @@ const findCardByUUID = (cardId, operatorID)=>{
 			  }]   
 			});
 }
+
+apiRouter.get(`${path}/send/client/:clientId/card`,function(req, res) {
+	let clientId = req.params.clientId;
+	Logger.log({level: "info", message:`Pinging client ${clientId}`});
+	wsServer.emit(`send/${clientId}`, "world");
+    res.status(200).send({});
+});
+
+apiRouter.get(`${path}/owner/:ownerId`,function(req, res) {
+	Logger.log({level: "info", message:"Request on get cards by owner"});
+	Card.findAll({
+				where:{ OWNER_ID: req.params.ownerId },
+				include: [
+				{
+				    model: dataSource.models.Brand,
+				    as: 'brand',
+				    required: true
+				}]})
+	.then((cards)=>{
+        res.status(200).send(cards);
+    })
+});
 
 apiRouter.get(path,function(req, res) {
 	console.log("Request on get cards");
@@ -50,28 +72,35 @@ apiRouter.post(`${path}/:uuid`,function(req, res) {
 	});
 });
 
-apiRouter.route("/transactions/credit/:cardId")
-		.post(function(req, res) {
-			console.log("Request of transaction");
+apiRouter.post("/transactions/credit/:cardId",function(req, res) {
+			Logger.log({level:"info",message:"Request of transaction"});
 			let uuid = req.params.cardId;
 			let operatorID = req.body.operatorID;
 
-			console.log(req.body);
+			Logger.log({level:"info",message:JSON.stringify(req.body)});
 			let totalSale = req.body.totalSale;
 
-			calculatePointsToAdd(operatorID,uuid, totalSale)
-			.then(({points, noResult})=>{
-				if(noResult){
-					res.status(405).send({error:"No cards found belonging to this operators"});
-				}
-				console.log(`Points gained: ${points}`);	
+			findCardByUUID(uuid, operatorID)
+			.then((cards)=>{
+				console.log(`Cards: ${cards}`);
+				if(cards.length != 0){
+					const points=totalSale*cards[0].creditPercentage;
+					console.log(`Points gained: ${points}`);	
+					const userID = cards[0].OWNER_ID;
 
-				Card.increment('points', { by: points, where: { value: uuid }})
-				.then(()=>{
-					console.log(`Card point: ${uuid} aumented by: ${points}`);
-					res.status(200).send({points:points});
-				});
-			})
+					Card.increment('points', { by: points, where: { value: uuid }})
+					.then(()=>{
+						cards[0].points = cards[0].points + points;
+						wsServer.emit(`send/${userID}`, JSON.stringify(cards[0]));
+
+						console.log(`Card point: ${uuid} aumented by: ${points}`);
+						res.status(200).send({points:points});
+					});
+				}else{
+					res.status(405).send({error:"No cards found belonging to this operators"});
+					return;
+				}
+			});
 		});
 
 
