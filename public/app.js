@@ -5,6 +5,7 @@ import tester from "./components/adBlockTester.js"
 import escape from "./utils/stringUtils.js";
 import WebSocketInstance from "./messaging/Socket.js"
 import removeAllChildNodes from "./utils/DomUtils.js";
+import handleError from "./utils/errorHandler.js"
 
 const componentsArray = [];
 const currentUserId = 1;
@@ -13,22 +14,7 @@ var  cardStore = [];
 
 const store = {};
 
-function handleError(error){
-	let errorContainer = document.createElement("div");
 
-	let errorBanner = document.createElement("p");;
-	errorBanner.innerHTML ="Something went wrong";
-	errorBanner.className = ["danger"];
-
-	let errorMsg = document.createElement("p");
-	errorMsg.innerHTML = error;
-	
-	errorContainer.appendChild(errorBanner);
-	errorContainer.appendChild(errorMsg);
-
-	document.getElementsByTagName("body")[0].appendChild(errorContainer);
-
-}
 
 function configureComponents(){
 	let greetingContainer = document.querySelector("#greetingComponent-ui");	

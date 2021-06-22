@@ -1,5 +1,6 @@
 const Logger = require("./logger/Logger.js");
 const apiRouter = require("./api/cardController.js");
+const authRouter = require("./api/auth.js");
 const bodyParser = require('body-parser')
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -27,7 +28,7 @@ app.use(cookieParser());
 app.use(session({secret: "1234"}));
 
 app.use("/api", apiRouter);
-
+app.use("/auth", authRouter);
 
 app.get("/login", (req, res)=>{
   if(req.session.user){
@@ -61,7 +62,7 @@ app.get("/logout", (req, res)=>{
     }
   });
   
-  res.render('login.pug', {});
+  res.redirect("/");
 });
 
 
@@ -74,47 +75,13 @@ app.get("/users", (req, res) => {
 });
 
 
-app.post("/loginuser",(req,res)=>{
-  
-  Logger.log({
-    level:"info",
-    message: `Searching for user ${req.body.password}`
-  });
-
-   User.findAll({limit: 1,
-    where:{email:req.body.email, password: req.body.password}})
-   .then(users=>{
-     if(!users|| users.length <1){
-       Logger.log({
-        level:"info",
-        message: "No user found"
-      });
-       res.redirect("/login")
-       return;
-     }
-
-    Logger.log({
-      level:"info",
-      message: "User authenticated agains db"
-    });
-    
-    let user = users[0].dataValues;
-
-    Logger.log({
-      level:"info",
-      message: JSON.stringify(user)
-    });
-    let newUser = {name:user.name, typeOfUser: user.typeOfUser};
-    req.session.user = newUser;
-
-    switchSession(req,res,user);
-  });
-});
-
-
 app.use((req,res, next)=>{
+
   Logger.log({level:"info", message: `Request on ${req.originalUrl}`});
 
+  if(req.originalUrl.startsWith("/api")||req.originalUrl.startsWith("/auth")){
+    return;
+  }
   if(!req.session.user|| req.session.user == undefined){
     
     Logger.log({
@@ -132,6 +99,18 @@ app.use((req,res, next)=>{
   
   next();
 });
+
+
+app.get("/", (req,res)=>{
+  switchSession(req,res, req.session.user);
+});
+
+
+app.get("/index", (req, res)=>{
+  res.render('index.pug', {title:"Point Card"});
+})
+
+
 
 function switchSession(req, res, user){
    
@@ -151,16 +130,7 @@ function switchSession(req, res, user){
   }
 }
 
-app.get("/", (req,res)=>{
-  switchSession(req,res, req.session.user);
-});
-
-
-app.get("/index", (req, res)=>{
-  res.render('index.pug', {title:"Point Card"});
-})
-
-
 
 startApp();
+
 
