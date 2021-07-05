@@ -1,7 +1,7 @@
 
 import i18n from "../i18n.js";
 import getHTML from "./CardActionsComponent-ui.js";
-import BaseComponent from "./BaseComponent.js";
+import BaseComponent from "./base_component/BaseComponent.js";
 
 export default class CardActionsComponent extends BaseComponent{
 

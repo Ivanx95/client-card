@@ -1,6 +1,6 @@
 import getHTML from "./qrReaderComponent-ui.js";
-import BaseComponent from "./BaseComponent.js";
-import requests from "../api/request.js"
+import BaseComponent from "../base_component/BaseComponent.js";
+import requests from "../../api/request.js"
 export default class qrReaderComponent extends BaseComponent{
 
  constructor({container, state, callBack}) {

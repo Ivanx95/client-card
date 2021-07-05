@@ -1,0 +1,61 @@
+extends base.pug
+
+block content1
+	div(class="adBanner" id="adTester")
+
+	section(class="section")
+		nav(class="navbar" role="navigation" aria-label="main navigation")
+			div(class="navbar-brand")
+				a(class="navbar-item",href="https://bulma.io")
+					img(id="logo" src="https://bulma.io/images/bulma-logo.png" width="112" height="28")
+
+				a(id="burguer", role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample")
+					span(aria-hidden="true")
+					span(aria-hidden="true")
+					span(aria-hidden="true")
+
+			div(class="navbar-menu", id="navMenu")
+				div(class="navbar-start")
+					a(class="navbar-item") Home
+
+				div(class="navbar-end")
+					div(class="navbar-item")
+						div(class="buttons")
+							a(class="button is-danger" href="/logout") Cerrar sesión
+		          
+		        
+	div(id="greetingComponent-ui")
+
+	block content
+
+
+block js1
+	script(type='text/javascript').
+			var touched = false;
+			var navMenu = document.getElementById("navMenu");
+			var burguerEl = document.getElementById("burguer");
+
+			burguerEl.addEventListener('click',()=>{
+				touched=!touched;
+				if(touched){
+					burguerEl.className = ["navbar-burger is-active"];
+					navMenu.className=["navbar-menu is-active"];
+					
+				}else {
+					burguerEl.className = ["navbar-burger"]
+					navMenu.className=["navbar-menu"];
+				}
+				
+			});
+		
+
+	script(type='text/javascript').
+		window.onerror = function (e) {
+			console.log('Error: ', e);
+			alert(e);
+		};
+	
+	script(src="/socket.io/socket.io.js")
+	block js
+
+

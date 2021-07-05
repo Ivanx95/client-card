@@ -1,4 +1,4 @@
-import BaseComponent from "./BaseComponent.js";
+import BaseComponent from "../base_component/BaseComponent.js";
 
 import formHTML from "./FormScannerComponent-ui.js";
 

@@ -3,8 +3,8 @@ module.exports = function(dataSource, DataTypes){
   const User= dataSource.define('User', {
     userId:{ 
     	type: DataTypes.INTEGER,
-    	allowNull: false,
     	field: 'USER_ID',
+        autoIncrement: true,
         primaryKey:true
     },
 

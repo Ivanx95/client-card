@@ -1,9 +1,7 @@
 const path = "/auth";
 
-
-
- function login(body, callBack){
-
+	
+function createFormLoginOptions(body){
 
 	const headers = new Headers({
 	    "Content-Type": "application/json",
@@ -11,15 +9,28 @@ const path = "/auth";
 	});
 
 	const options = {
-    	method: 'POST',
-    	body: body,
-    	headers: headers
+		method: 'POST',
+		body: body,
+		headers: headers
 	};
+	return options;
+}
 
+function login(body, callBack){
 
+ 	const options = createFormLoginOptions(body);
 	fetch(`${path}/loginuser`,options)
 	.then(response => callBack(response));
 }
 
+function sigIn(body, callBack){
 
-export default {login}
+	const options = createFormLoginOptions(body);
+
+	fetch(`${path}/signup`,options)
+	.then(response => callBack(response));
+}
+
+
+
+export default {login, sigIn};

@@ -1,9 +1,9 @@
 
-import BaseComponent from "./BaseComponent.js";
-import FormScannerComponent from "./FormScannerComponent.js";
+import BaseComponent from "./base_component/BaseComponent.js";
+import FormScannerComponent from "./form_scanning/FormScannerComponent.js";
 import CardActionsComponent from "./CardActionsComponent.js"
-import QrReaderComponent from "./qrReaderComponent.js"
-import removeAllChildNodes from "../utils/DomUtils.js";
+import QrReaderComponent from "./qreader/qrReaderComponent.js"
+import {removeAllChildNodes} from "../utils/DomUtils.js";
 
 class DynamicClass {
     constructor (klass, ...opts) {

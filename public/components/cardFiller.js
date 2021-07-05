@@ -1,6 +1,6 @@
 import escape from "../utils/stringUtils.js";
 import getHTML from "./CardComponent-ui.js";
-import BaseComponent from "./BaseComponent.js";
+import BaseComponent from "./base_component/BaseComponent.js";
 
 export default class CardComponent extends BaseComponent{
   constructor(container) {

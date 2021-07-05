@@ -16,6 +16,7 @@ const serverProps={
 
 const app = express();
 app.use(express.static("public"));
+app.use(express.static("shared"));
 var httpServer;
 if(env=="DEV"){
  httpServer = http.createServer(app);  

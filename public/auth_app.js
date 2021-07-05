@@ -1,5 +1,5 @@
 // import handleError from "./utils/errorHandler.js"
-import AuthComponent from "./components/AuthComponent.js"
+import AuthComponent from "./components/auth/AuthComponent.js"
 
 
 function app(){

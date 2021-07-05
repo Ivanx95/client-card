@@ -1,24 +1,17 @@
-const Logger = require("./logger/Logger.js");
-const apiRouter = require("./api/cardController.js");
-const authRouter = require("./api/auth.js");
-const bodyParser = require('body-parser')
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const {httpServer, app, startApp} = require("./server.js");
-const express = require("express");
-const appName= "Client Card";
-
-
-
-
+import Logger from "./logger/Logger.js";
+import apiRouter from "./api/cardController.js" ;
+import  authRouter from "./api/auth.mjs";
+import bodyParser  from 'body-parser';
+import session  from 'express-session';
+import cookieParser  from 'cookie-parser';
+import {httpServer, app, startApp}  from "./server.js";
+import express  from "express";
+import dataSource from "./db/model/DB.js";
 
 Logger.log({level:"info", message: "Starting application"});
 
 app.set('views', './src/views');
 app.set('view engine', 'pug');
-
-
-const dataSource = require("./db/model/DB.js");
 
 const User= dataSource.models.User;
 
@@ -29,6 +22,16 @@ app.use(session({secret: "1234"}));
 
 app.use("/api", apiRouter);
 app.use("/auth", authRouter);
+
+
+
+app.get("/signin",(req,res)=>{
+ if(req.session.user){
+    switchSession(req,res, req.session.user);
+    return;
+  }
+  res.render('signin.pug', {});
+});
 
 app.get("/login", (req, res)=>{
   if(req.session.user){

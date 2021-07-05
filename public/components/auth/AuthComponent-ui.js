@@ -1,5 +1,5 @@
 export default function getHTML(){
-	return `<div class="card"
+	return `<div class="card">
 				<div class="card-image">
 					<figure class="image is-4by3">
 						<img src="/assets/logo.png">
@@ -22,6 +22,7 @@ export default function getHTML(){
 				<div class="field is-grouped">
 					 <div class="control"> 
 					 	<button class="button is-link" id="loginBtn">Iniciar Sesión</button>
+						<a href="/signin" class="button is-success">Registrarse</a>					 	
 				 	</div>
 			 	</div>
 		 	</div>
