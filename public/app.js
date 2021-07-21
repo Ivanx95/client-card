@@ -1,16 +1,13 @@
 import requests from "./api/request.js"
 import GreetingComponent from "./components/greetingComponent.js"
 import CardComponent from "./components/cardFiller.js"
-import tester from "./components/adBlockTester.js"
 import escape from "./utils/stringUtils.js";
 import WebSocketInstance from "./messaging/Socket.js"
-import removeAllChildNodes from "./utils/DomUtils.js";
 import handleError from "./utils/errorHandler.js"
 
 const componentsArray = [];
 const currentUserId = 1;
 let  cardComponent;
-var  cardStore = [];
 
 const store = {};
 
@@ -31,7 +28,7 @@ function configureComponents(){
 		let index = cards.map((c)=>c.cardId).indexOf(card.cardId);
 		cards[index] = card;
 		store.cards = cards;
-	  	cardComponent.createCardElement(card);
+		cardComponent.createCardElement(card);
     });
 } 
 
@@ -49,16 +46,11 @@ function app(){
 
   const cardHolder = document.getElementById("card-table");
 
-  
-  	
-   
-   requests.getCardsByClient(currentUserId,cards =>{
-   	cards.forEach(cardEl=>{
-   		let row = document.createElement('div');
-   		row.className = ["columns"];
-
+  requests.getCardsByClient(currentUserId,cards =>{
+	  cards.forEach(cardEl=>{
+	    let row = document.createElement('div');
+	    row.className = ["columns"];
 		let row1 = document.createElement('div');
-
 		
 		row1.className = ["column"];
 
@@ -70,17 +62,16 @@ function app(){
 
 		row.appendChild(row1);
 		row.cardId = cardEl.cardId;
-		row.addEventListener("click",(event)=>{
-
-			let targetCard= store.cards.find(card=>{
-				return card.cardId == row.cardId;
-			})
-			cardComponent.createCardElement(targetCard);
+		row.addEventListener("click",()=>{
+		let targetCard= store.cards.find(card=>{
+			return card.cardId == row.cardId;
+		})
+		cardComponent.createCardElement(targetCard);
 		});
 
 		cardHolder.appendChild(row);
-	  });
-   	store.cards = cards;
+	});
+	store.cards = cards;
    });
 }
 
