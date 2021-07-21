@@ -9,7 +9,7 @@ export default class CardActionsComponent extends BaseComponent{
   	super(container, getHTML);
     this.uiElements = {
     	loginBtn:{id:"#loginBtn"},
-    	passwordInput: {id:"#passwordInput"},
+    	passwordInput: {id:"#passwordInput", isPasswordInput:true},
     	emailInput: {id:"#emailInput"},
     };
     super.addForm("formAction",this.uiElements.loginBtn);

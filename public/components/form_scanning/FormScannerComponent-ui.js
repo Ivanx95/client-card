@@ -4,14 +4,14 @@ export default function getHTML(){
 				<div class="field">
 				  <label class="label">Folio</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Ingrese el folio de su cuenta">
+				    <input autocomplete="off" class="input" type="text" placeholder="Ingrese el folio de su cuenta">
 				  </div>
 				</div>
 
 				<div class="field">
 				  <label class="label">Total</label>
 				  <div class="control has-icons-left">
-				    <input id="moneyInput" class="input is-success" type="text" placeholder="0.0" pattern="^\$[1-9]\d{1,2}(,\d{3})*(\.\d+)?$">
+				    <input autocomplete="off" id="moneyInput" class="input is-success" type="text" placeholder="0.0" pattern="^\$[1-9]\d{1,2}(,\d{3})*(\.\d+)?$">
 				    <span class="icon is-small is-left">
 	      					$
 	    			</span>

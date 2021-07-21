@@ -1,5 +1,4 @@
-
-import i18n from "../i18n.js";
+import GreetingComponent from "./greetingComponent.js"
 import getHTML from "./CardActionsComponent-ui.js";
 import BaseComponent from "./base_component/BaseComponent.js";
 
@@ -16,7 +15,10 @@ export default class CardActionsComponent extends BaseComponent{
     
   }
   init(){
+    let greetingContainer = this.container.querySelector("#greetingComponent-ui");  
+    this.greetingComponent =new GreetingComponent(greetingContainer)
   	super.init();
+    this.greetingComponent.init();
   	this.creditBtn = this.uiElements.creditBtn.el;
     this.creditBtn.addEventListener('click', ()=>{
       this.callBack('f');
