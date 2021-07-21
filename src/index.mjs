@@ -1,11 +1,13 @@
 import Logger from "./logger/Logger.js";
 import apiRouter from "./api/cardController.js" ;
+import brandRouter from "./api/BrandController.js" ;
 import  authRouter from "./api/auth.mjs";
+import  fileRouter from "./api/fileController.js";
 import bodyParser  from 'body-parser';
 import session  from 'express-session';
 import cookieParser  from 'cookie-parser';
-import {httpServer, app, startApp}  from "./server.js";
-import express  from "express";
+import { app, startApp}  from "./server.js";
+
 import dataSource from "./db/model/DB.js";
 
 Logger.log({level:"info", message: "Starting application"});
@@ -13,16 +15,44 @@ Logger.log({level:"info", message: "Starting application"});
 app.set('views', './src/views');
 app.set('view engine', 'pug');
 
-const User= dataSource.models.User;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cookieParser());
 app.use(session({secret: "1234"}));
 
-app.use("/api", apiRouter);
-app.use("/auth", authRouter);
+app.use((req,res, next)=>{
+  if(req.session.user){
+   Logger.log({level:"info", message: `User: ${JSON.stringify(req.session.user)}`});  
+  }
+  Logger.log({level:"info", message: `Request on ${req.originalUrl}`});
+  next();
+});
 
+const notLoggedUser = (req,res, next)=>{
+
+  if(!req.session.user|| req.session.user == undefined){
+    
+    Logger.log({
+      level: 'info',
+      message: "No user session found"
+    });
+
+    res.status(401).send({"error":"Unauthorized access"});
+    return;
+  }
+  Logger.log({
+      level: 'info',
+      message: "User session found"
+  });
+  
+  next();
+}
+
+app.use("/api", apiRouter);
+app.use("/api",notLoggedUser, brandRouter);
+app.use("/auth", authRouter);
+app.use("/file", fileRouter);
 
 
 app.get("/signin",(req,res)=>{
@@ -40,6 +70,7 @@ app.get("/login", (req, res)=>{
   }
   res.render('login.pug', {});
 });
+
 
 
 app.get("/admin", (req, res)=>{
@@ -80,9 +111,9 @@ app.get("/users", (req, res) => {
 
 app.use((req,res, next)=>{
 
-  Logger.log({level:"info", message: `Request on ${req.originalUrl}`});
-
   if(req.originalUrl.startsWith("/api")||req.originalUrl.startsWith("/auth")){
+    Logger.log({level:"info", message:"Ignoring call to api"})
+    next();
     return;
   }
   if(!req.session.user|| req.session.user == undefined){
@@ -132,6 +163,8 @@ function switchSession(req, res, user){
         break;
   }
 }
+
+
 
 
 startApp();

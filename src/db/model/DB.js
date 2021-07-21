@@ -25,10 +25,12 @@ let models = {};
 models.User = dataSource.import(__dirname + "/User.js");
 models.Brand = dataSource.import(__dirname + "/Brand.js");
 models.Card = dataSource.import(__dirname + "/Card.js");
+models.CardTemplate = dataSource.import(__dirname + "/CardTemplate.js");
 
 const bootstrap = dataSource.sync();
 
 models.Brand.associate(models);
+models.CardTemplate.associate(models);
 models.Card.associate(models);
 
 console.log("Models sync up");

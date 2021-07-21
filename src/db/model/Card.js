@@ -17,29 +17,19 @@ module.exports = function(dataSource, DataTypes){
         allowNull: true,
         field: 'POINTS'
     },
+    //uuid identificator
+    //whats going to be show in the app
     value: {
         type: DataTypes.STRING(20),
         allowNull: false,
         field: 'VALUE'
     },
-    creditPercentage:
-    {
-         type: DataTypes.DECIMAL(0,2),
-         allowNull: true,
-         field:'CREDIT_PERCENTAGE'
-    },
-     redemptionPercentage:
-    {
-         type: DataTypes.DECIMAL(0,2),
-         allowNull: true,
-         field:'REDEMPTION_PERCENTAGE'
-    }
   },{tableName:'CARD',timestamps: false});
   
  console.log("Created users model");
  Card.associate = (models) =>{
     Card.belongsTo(models.User,{foreignKey: 'OWNER_ID'});
-    Card.belongsTo(models.Brand, {foreignKey: 'BRAND_ID', as :'brand'});
+    Card.belongsTo(models.CardTemplate, {foreignKey: 'CARD_TEMPLATE_ID', as :'template'});
   
  };
  return Card;

@@ -8,20 +8,53 @@ const express = require("express");
 const apiRouter = express.Router();
 
 
+const transformCards = (cards) =>{
+	     return  cards.map(c=>{
+			let newCard= {};
+			newCard.cardId = c.cardId;
+			newCard.level = c.level;
+			newCard.points = c.points;
+			newCard.value = c.value;
+			newCard.creditPercentage = c.template.creditPercentage;
+			newCard.creditPercentage = c.template.creditPercentage;
+			newCard.redemptionPercentage = c.template.redemptionPercentage;
+			newCard.brand = c.template.brand
+			newCard.OWNER_ID = c.OWNER_ID;
+			return newCard;
+		});}
+
+const includeUntilBrand = [{
+						    model: dataSource.models.CardTemplate,
+						    as: 'template',
+						    required: true,
+						    include: [{
+						    	model: dataSource.models.Brand,
+					    		 as:'brand',
+					    		 required :true
+						    	}]
+						   }];
+
 const findCardByUUID = (cardId, operatorID)=>{
 	return Card.findAll({
 			  where: {
 			    value: cardId,
 			  },
-			  include: [{
-			    model: dataSource.models.Brand,
-			    as: 'brand',
-			    required: true,
-			    where:{
-			    	USER_ID: operatorID
-			    }
-			  }]   
-			});
+			  include: [
+				{
+				    model: dataSource.models.CardTemplate,
+				    as: 'template',
+				    required: true,
+				    include: [
+				    	{
+			    		 model: dataSource.models.Brand,
+			    		 as:'brand',
+			    		 required :true,
+			    		  where:{
+					    	USER_ID: operatorID
+					    }
+				    	}]
+				}]}
+			);
 }
 
 apiRouter.get(`${path}/send/client/:clientId/card`,function(req, res) {
@@ -33,25 +66,20 @@ apiRouter.get(`${path}/send/client/:clientId/card`,function(req, res) {
 
 apiRouter.get(`${path}/owner/:ownerId`,function(req, res) {
 	Logger.log({level: "info", message:"Request on get cards by owner"});
-	Card.findAll({
-				where:{ OWNER_ID: req.params.ownerId },
-				include: [
-				{
-				    model: dataSource.models.Brand,
-				    as: 'brand',
-				    required: true
-				}]})
+	Card.findAll({ where:{ OWNER_ID: req.params.ownerId },
+				   include: includeUntilBrand
+				})
 	.then((cards)=>{
-        res.status(200).send(cards);
-    })
+        return transformCards(cards);
+    }).then(cards=> res.status(200).send(cards))	;
 });
 
 apiRouter.get(path,function(req, res) {
 	console.log("Request on get cards");
-	Card.findAll({include:'brand'})
+	Card.findAll({include: includeUntilBrand})
 	.then((cards)=>{
-        res.status(200).send(cards);
-    })
+        return transformCards(cards);
+    }).then(cards=> res.status(200).send(cards));
 });
 
 apiRouter.post(`${path}/:uuid`,function(req, res) {
@@ -60,6 +88,9 @@ apiRouter.post(`${path}/:uuid`,function(req, res) {
 	let operatorID = req.body.operatorID;
 
 	findCardByUUID(uuid,operatorID)
+	.then((cards)=>{
+        return transformCards(cards);
+    })
 	.then((cards)=>{
 		console.log(`Cards: ${cards}`);
 		if(cards.length != 0){
@@ -81,6 +112,7 @@ apiRouter.post("/transactions/credit/:cardId",function(req, res) {
 			let totalSale = req.body.totalSale;
 
 			findCardByUUID(uuid, operatorID)
+			.then((cards)=> transformCards(cards))
 			.then((cards)=>{
 				console.log(`Cards: ${cards}`);
 				if(cards.length != 0){
@@ -153,34 +185,35 @@ apiRouter.route("/transactions/redeem/:cardId")
 
 function calculatePointsToAdd(operatorID, cardId, saleTotal){
 	console.log(`Operatorid: ${operatorID}`);
-	return findCardByUUID(cardId, operatorID).then((cards)=>{
-				console.log(`Cards: ${cards}`);
-				if(cards.length != 0){
-					return {points:saleTotal*cards[0].creditPercentage};	
-				}else{
-					return {noResult:true};
-				}
-			});
+	return findCardByUUID(cardId, operatorID)
+				.then((cards)=> transformCards(cards))
+				.then((cards)=>{
+					console.log(`Cards: ${cards}`);
+					if(cards.length != 0){
+						return {points:saleTotal*cards[0].creditPercentage};	
+					}else{
+						return {noResult:true};
+					}
+				});
 }
 
 
 function calculatePointsToSubstract(operatorID, cardId){
 	console.log(`Operatorid: ${operatorID}`);
-	return findCardByUUID(cardId,operatorID).then((cards)=>{
-				console.log(`Cards: ${cards}`);
-				let card = cards[0];
-				if(cards.length != 0){
-					console.log(`Cards: ${card.points}`);
-					return {money: card.redemptionPercentage * card.points };	
-				}else{
-					return {noResult:true};
-				}
-			});
+	return findCardByUUID(cardId,operatorID)
+				.then((cards)=> transformCards(cards))
+				.then((cards)=>{
+					console.log(`Cards: ${cards}`);
+					let card = cards[0];
+					if(cards.length != 0){
+						console.log(`Cards: ${card.points}`);
+						return {money: card.redemptionPercentage * card.points };	
+					}else{
+						return {noResult:true};
+					}
+				});
 }
 
-function getBrandOwner(operatorID){
-	return operatorID;
-}
 
 
 module.exports = apiRouter;

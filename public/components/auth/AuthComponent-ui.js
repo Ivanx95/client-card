@@ -7,16 +7,22 @@ export default function getHTML(){
 				</div>
 				<div class="card-content">
 					<div class="content">
+					<h1 class="title">Iniciar sesión</h1>
 						<div class="field">
 							<label class="label">Correo</label>
 							<div class="control">
-								<input class="input" name="email" id="emailInput" type="text" placeholder="Ingrese su correo">
+								<input autofocus=true class="input" name="email" id="emailInput" type="text" placeholder="Ingrese su correo">
 							</div>
 						</div>
 					<div class="field">
 					<label class="label">Contraseña </label>
-					<div class="control"> 
+					<div  is-password=true class="control has-icons-right"> 
 						<input class="input" id="passwordInput" name="password" type="password">
+						<a>
+						 	<span class="icon is-small is-right" style="pointer-events: all; cursor: pointer">
+	    					  <i class="fas fa-eye-slash"></i>
+							</span>
+						</a>
 					</div>
 				</div>
 				<div class="field is-grouped">

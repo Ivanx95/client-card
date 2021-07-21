@@ -1,10 +1,12 @@
 import {loading,danger, toggleClass} from "../../utils/cssUtils.js";
 import DomUtils from "../../utils/DomUtils.js";
+
 export default class BaseComponent{
+
   constructor(container, getHTML ) {
- 	let content = getHTML();
-	this.container = container;
-	container.innerHTML = content;
+    let content = getHTML? getHTML(): this.baseHTML();
+    this.container = container;
+    container.innerHTML = content;
   }
 
   addForm(formName, element){
@@ -95,7 +97,25 @@ export default class BaseComponent{
       let fieldContainer = this.container.querySelector(query);
       this.uiElements[key].fieldContainer = fieldContainer;
 
+
       let component =this.uiElements[key];
+
+      if(component.isFileInput){
+
+        let fileLabelComponent =  fieldContainer.querySelector(".file-label");
+         
+         component.fileName = DomUtils.createFileNameLabel("...");
+
+         fileLabelComponent.appendChild(component.fileName);
+          component.el.addEventListener('change',(e=>{
+            toggleClass(fieldContainer,true,"is-success");
+            component.fileName.innerHTML = e.srcElement.files[0]?.name;
+          }));
+      }
+
+      if(component.isPasswordInput){
+        DomUtils.configurePasswordInput( component.el,this.container);
+      }
 
       component.helper = DomUtils.createP(`help ${danger}`);
   	  
@@ -107,7 +127,7 @@ export default class BaseComponent{
           }
           component.helper.innerHTML = message;
           component.fieldContainer.hasHelper=true;
-          toggleElement(component.helper,true, component.fieldContainer);
+          DomUtils.toggleElement(component.helper,true, component.fieldContainer);
       };
       component.clearHelper = ()=> {
 
@@ -116,10 +136,30 @@ export default class BaseComponent{
           }
           component.fieldContainer.hasHelper=false;
           component.helper.innerHTML = null;
-          toggleElement(component.helper,false, component.fieldContainer);
+          DomUtils.toggleElement(component.helper,false, component.fieldContainer);
           component.invalidate(false);
       };
       component.load = (flag)=>{toggleClass(component.el,flag,loading)};
     }
+  }
+
+  baseHTML(){
+    return `
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column"></div>
+          <div class="column is-four-fifths">
+            <div class="hero">
+              <div class="container" id="mainComponent">
+
+              </div>
+            </div>
+          </div>
+          <div class="column"></div>
+        </div>
+      </div>
+    </section>
+  `;
   }
 }
