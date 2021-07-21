@@ -11,6 +11,16 @@ function getCards(callBack){
 		});
 }
 
+
+function getBrands(callBack){
+	fetch("/api/brands")
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		callBack(data);
+		});
+}
+
 function getCardsByClient(userId,callBack){
 	fetch(`${path}/owner/${userId}`)
 	.then(response => response.json())
@@ -69,6 +79,6 @@ function credit(opID, uuid,totalSale,callBack){
 
 
 
-export default {getCards, findCards,credit,getCardsByClient};
+export default {getCards, findCards,credit,getCardsByClient,getBrands};
 
  
