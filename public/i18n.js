@@ -1,7 +1,6 @@
 import escape from "./utils/stringUtils.js";
 
 const pattern = "${0}";
-const moneyPattern = "0";
 
 const messageEs = [
 	{id:"greeting", value:"Bienvenido ${0}"}
