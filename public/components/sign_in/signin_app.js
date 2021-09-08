@@ -1,6 +1,6 @@
 import handleError from "../../utils/errorHandler.js"
 import requests from "../../api/authRequests.js"
-import getHTML from "./SignInComponent-ui.js";
+import html from "./SignInComponent-ui.html";
 import SinglePageComponent from "../base_component/SinglePageComponent.js";
 import _validate from "../../ValidationUtils.mjs";
 import UserConstrains from "/UserConstrains.mjs";
@@ -8,7 +8,8 @@ import UserConstrains from "/UserConstrains.mjs";
 class SignInApp extends SinglePageComponent{
 
   constructor() {
-  	super(getHTML);
+    let container = document.querySelector("#mainModule-ui");  
+  	super(container, html);
     this.uiElements = {
     	signInBtn:{id:"#signInBtn"},
     	passwordInput: {id:"#passwordInput"},

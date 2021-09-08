@@ -1,11 +1,11 @@
 import GreetingComponent from "./greetingComponent.js"
-import getHTML from "./CardActionsComponent-ui.js";
+import html from "./CardActionsComponent-ui.html";
 import BaseComponent from "./base_component/BaseComponent.js";
 
 export default class CardActionsComponent extends BaseComponent{
 
   constructor({container, callBack}) {
-  	super(container, getHTML);
+  	super(container, html);
     this.uiElements = {
     	creditBtn:{id:"#creditAction"},
     	redemBtn: {id:"#redemAction"}

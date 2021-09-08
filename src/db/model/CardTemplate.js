@@ -5,6 +5,7 @@ module.exports = function(dataSource, DataTypes){
     	type: DataTypes.INTEGER,
     	allowNull: false,
     	field: 'CARD_TEMPLATE_ID',
+        autoIncrement: true,
         primaryKey:true,
     },
     //uuid identificator
@@ -16,13 +17,13 @@ module.exports = function(dataSource, DataTypes){
     },
     creditPercentage:
     {
-         type: DataTypes.DECIMAL(0,2),
+         type: DataTypes.DECIMAL(2,2),
          allowNull: true,
          field:'CREDIT_PERCENTAGE'
     },
      redemptionPercentage:
     {
-         type: DataTypes.DECIMAL(0,2),
+         type: DataTypes.DECIMAL(2,2),
          allowNull: true,
          field:'REDEMPTION_PERCENTAGE'
     }

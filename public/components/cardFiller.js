@@ -1,10 +1,10 @@
 import escape from "../utils/stringUtils.js";
-import getHTML from "./CardComponent-ui.js";
+import html from "./CardComponent-ui.html";
 import BaseComponent from "./base_component/BaseComponent.js";
 
 export default class CardComponent extends BaseComponent{
   constructor(container) {
-  	super(container, getHTML);
+  	super(container, html);
     this.type  = "read-only";
     this.qrcode = null;
 	this.uiElements = {
@@ -16,15 +16,15 @@ export default class CardComponent extends BaseComponent{
     
   }
 
-	qRSizes(pageWidth){
-		if(pageWidth<200){
-			return 150;
-		}else if(pageWidth >200 && pageWidth < 500){
-			return pageWidth-50;
-		}else{
-			return 500;
-		}
-	}
+  qRSizes(pageWidth){
+  	if(pageWidth<200){
+  		return 150;
+  	}else if(pageWidth >200 && pageWidth < 500){
+  		return pageWidth-50;
+  	}else{
+  		return 500;
+  	}
+  }
 
   init(){
   	super.init();

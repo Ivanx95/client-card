@@ -1,12 +1,12 @@
 import DomUtils from "../../utils/DomUtils.js";
 import BaseComponent from "../base_component/BaseComponent.js";
 
-import formHTML from "./AddBrandComponent-ui.js";
+import html from "./AddBrandComponent-ui.html";
 
 
 export default class AddBrandComponent extends BaseComponent{
   constructor({container, callBack}) {
-  	super(container,formHTML);	
+  	super(container,html);	
   	this.uiElements = {
         logoInput: {id:"#logoInput", isFileInput:true}
     };

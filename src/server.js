@@ -17,6 +17,8 @@ const serverProps={
 const app = express();
 app.use(express.static("public"));
 app.use(express.static("shared"));
+
+app.disable('x-powered-by');
 var httpServer;
 if(env=="DEV"){
  httpServer = http.createServer(app);  

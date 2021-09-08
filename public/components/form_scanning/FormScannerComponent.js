@@ -1,11 +1,11 @@
 import BaseComponent from "../base_component/BaseComponent.js";
 
-import formHTML from "./FormScannerComponent-ui.js";
+import html from "./FormScannerComponent-ui.html";
 
 
 export default class FormScannerComponent extends BaseComponent{
   constructor({container, callBack}) {
-  	super(container,formHTML);	
+  	super(container,html);	
   	this.uiElements = {
       scannerButton:{id:"#scannerButton"},
       moneyInput : {id:"#moneyInput"}

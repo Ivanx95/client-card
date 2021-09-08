@@ -2,9 +2,10 @@
   "name": "clientcard",
   "version": "1.0.0",
   "description": "Application of client cards",
+  "private": true,
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node src/index.mjs"
   },
   "dependencies": {
@@ -30,6 +31,10 @@
     "utf-8-validate": "^5.0.5"
   },
   "devDependencies": {
-    "eslint": "^7.30.0"
+    "eslint": "^7.30.0",
+    "html-loader": "^2.1.2",
+    "mocha": "^9.0.3",
+    "webpack": "^5.46.0",
+    "webpack-cli": "^4.7.2"
   }
 }

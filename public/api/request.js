@@ -1,9 +1,10 @@
 
-const path = "/api/cards";
+const basePath = "/api";
+const cardPath = basePath+"/cards";
 
 
 function getCards(callBack){
-	fetch(path)
+	fetch(cardPath)
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
@@ -13,7 +14,7 @@ function getCards(callBack){
 
 
 function getBrands(callBack){
-	fetch("/api/brands")
+	fetch(basePath+"/brands")
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
@@ -22,7 +23,7 @@ function getBrands(callBack){
 }
 
 function getCardsByClient(userId,callBack){
-	fetch(`${path}/owner/${userId}`)
+	fetch(`${cardPath}/owner/${userId}`)
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
@@ -46,7 +47,7 @@ function findCards(uuid,opID,callBack){
 	};
 
 
-	fetch(`${path}/${uuid}`,options)
+	fetch(`${cardPath}/${uuid}`,options)
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
@@ -79,6 +80,47 @@ function credit(opID, uuid,totalSale,callBack){
 
 
 
-export default {getCards, findCards,credit,getCardsByClient,getBrands};
+function getCartdsTemplate(brandId, callBack){
+fetch(`${basePath}/card-template/${brandId}`)
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		callBack(data);
+		});
+}
+
+
+
+
+function updateCardTemplate(cardId,body,callBack){
+
+	let strBody = JSON.stringify(body);
+	const headers = new Headers({
+	    "Content-Type": "application/json",
+	    "Content-Length": strBody.length
+	});
+
+	const options = {
+    	method: 'PATCH',
+    	body: strBody,
+    	headers: headers
+	};
+
+
+	fetch(`${basePath}/card-template/${cardId}`,options)
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		callBack(data);
+		});
+}
+
+export default {getCards, 
+				findCards,
+				credit,
+				getCardsByClient,
+				getBrands,
+				getCartdsTemplate,
+				updateCardTemplate};
 
  

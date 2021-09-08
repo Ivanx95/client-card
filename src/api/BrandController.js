@@ -3,6 +3,7 @@ const dataSource = require("../db/model/DB.js");
 
 const Brand= dataSource.models.Brand;
 
+
 const path ="/brands";
 const express = require("express");
 const apiRouter = express.Router();

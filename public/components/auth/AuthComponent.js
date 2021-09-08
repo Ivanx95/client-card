@@ -1,12 +1,11 @@
 import requests from "../../api/authRequests.js"
-import i18n from "../../i18n.js";
-import getHTML from "./AuthComponent-ui.js";
+import html from "./AuthComponent-ui.html";
 import BaseComponent from "../base_component/BaseComponent.js";
 
 export default class CardActionsComponent extends BaseComponent{
 
   constructor(container) {
-  	super(container, getHTML);
+  	super(container, html);
     this.uiElements = {
     	loginBtn:{id:"#loginBtn"},
     	passwordInput: {id:"#passwordInput", isPasswordInput:true},
@@ -20,7 +19,7 @@ export default class CardActionsComponent extends BaseComponent{
   init(){
   	super.init();
   	let loginBtn = this.uiElements.loginBtn;
-    ;
+    
     loginBtn.el.addEventListener('click', ()=>{
         loginBtn.load(true);
         super.block("formInput");

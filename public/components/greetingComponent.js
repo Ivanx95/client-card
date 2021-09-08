@@ -1,12 +1,12 @@
 import i18n from "../i18n.js";
-import getHTML from "./greetingComponent-ui.js";
+import html from "./greetingComponent-ui.html";
 import BaseComponent from "./base_component/BaseComponent.js";
 
 
 
 export default class GreetingComponent extends BaseComponent {
   constructor(container) {
-  	super(container, getHTML);
+  	super(container, html);
     this.uiElements = {greetingTitle:{id:"#greeting"}};
   }
 

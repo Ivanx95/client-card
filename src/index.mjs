@@ -1,8 +1,9 @@
 import Logger from "./logger/Logger.js";
 import apiRouter from "./api/cardController.js" ;
+import cardTemplateRouter from "./api/CardTemplateController.mjs" ;
 import brandRouter from "./api/BrandController.js" ;
-import  authRouter from "./api/auth.mjs";
-import  fileRouter from "./api/fileController.js";
+import authRouter from "./api/auth.mjs";
+import fileRouter from "./api/fileController.js";
 import bodyParser  from 'body-parser';
 import session  from 'express-session';
 import cookieParser  from 'cookie-parser';
@@ -29,6 +30,12 @@ app.use((req,res, next)=>{
   next();
 });
 
+app.use((req, res, next)=>{
+  //res.set("Content-Security-Policy", "default-src 'self' style-src https://maxcdn.bootstrapcdn.com https://bulma.io https://cdn.jsdelivr.net"  );
+  //res.set("X-Frame-Options","deny");
+  next();
+});
+
 const notLoggedUser = (req,res, next)=>{
 
   if(!req.session.user|| req.session.user == undefined){
@@ -51,6 +58,7 @@ const notLoggedUser = (req,res, next)=>{
 
 app.use("/api", apiRouter);
 app.use("/api",notLoggedUser, brandRouter);
+app.use("/api",notLoggedUser, cardTemplateRouter);
 app.use("/auth", authRouter);
 app.use("/file", fileRouter);
 
@@ -64,6 +72,7 @@ app.get("/signin",(req,res)=>{
 });
 
 app.get("/login", (req, res)=>{
+  console.log("Hi");
   if(req.session.user){
     switchSession(req,res, req.session.user);
     return;

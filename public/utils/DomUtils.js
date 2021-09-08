@@ -1,4 +1,4 @@
-import curry from "../../../Curryng.mjs";
+import curry from "/shared/Curryng.mjs";
 
 //ui-form utils
 

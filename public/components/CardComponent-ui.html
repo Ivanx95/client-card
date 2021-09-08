@@ -1,7 +1,6 @@
-export default function qrComponent(){
-  return `<div class="card" id="section">
+<div class="card" id="section">
   <div class="card-image">
-    <figure class="image is-4by3 qrHolder">
+    <figure class="image" id="qrHolder">
       
     </figure>
   </div>
@@ -9,16 +8,15 @@ export default function qrComponent(){
     <div class="media">
       
       <div class="media-content">
-        <p class="title is-4"></p>
+        <a class="title is-4" id="card-title">Something</p>
         
       </div>
     </div>
 
     <div class="content">
-     
+     <p>
+     	<strong>Puntos: </strong><span id="card-points"></span>
+     </p>
     </div>
   </div>
-</div>`
-};
-
-
+</div>

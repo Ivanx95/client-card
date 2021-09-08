@@ -45,14 +45,14 @@ const findCardByUUID = (cardId, operatorID)=>{
 				    as: 'template',
 				    required: true,
 				    include: [
-				    	{
-			    		 model: dataSource.models.Brand,
-			    		 as:'brand',
-			    		 required :true,
-			    		  where:{
-					    	USER_ID: operatorID
-					    }
-				    	}]
+				    {
+				    	model: dataSource.models.Brand,
+				    	as:'brand',
+				    	required :true,
+				    	where:{
+				    		USER_ID: operatorID
+				    	}
+				    }]
 				}]}
 			);
 }

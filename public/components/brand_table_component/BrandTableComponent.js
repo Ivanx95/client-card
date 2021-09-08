@@ -1,6 +1,6 @@
 import DomUtils from "../../utils/DomUtils.js";
 import BaseComponent from "../base_component/BaseComponent.js";
-import requests from "../../api/request.js"
+import requests from "../../api/request.js" 
 
 
 export default class BrandTableComponent extends BaseComponent{
@@ -25,6 +25,7 @@ export default class BrandTableComponent extends BaseComponent{
       this.fillTable(brands);
       
       this.uiElements.mainComponent.el.appendChild(addCompanies);  
+      
    });
 
   let title =DomUtils.create("h1","title","Mis empresas");
@@ -46,6 +47,12 @@ export default class BrandTableComponent extends BaseComponent{
 
     let th = 
     DomUtils._createAppend("th","has-text-centered")(a)();
+    a.addEventListener("click", ()=>{
+      let state  = {
+              brand: company
+            };
+      this.callBack("seeT", state);
+    });
     return th; 
    }
 
