@@ -2,64 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./public/components/auth/AuthComponent-ui.html":
-/*!******************************************************!*\
-  !*** ./public/components/auth/AuthComponent-ui.html ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/html-loader/dist/runtime/getUrl.js */ "./node_modules/html-loader/dist/runtime/getUrl.js");
-/* harmony import */ var _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___HTML_LOADER_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(/*! ../../../../../public/assets/logo.png */ "./public/assets/logo.png"), __webpack_require__.b);
-// Module
-var ___HTML_LOADER_REPLACEMENT_0___ = _node_modules_html_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_0___default()(___HTML_LOADER_IMPORT_0___);
-var code = "\t<div class=\"card\">\n\t\t<div class=\"card-image\">\n\t\t\t<figure class=\"image is-4by3\">\n\t\t\t\t<img src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\">\n\t\t\t</figure>\n\t\t</div>\n\t\t<div class=\"card-content\">\n\t\t\t<div class=\"content\">\n\t\t\t\t<h1 class=\"title\">Iniciar sesión</h1>\n\t\t\t\t<div class=\"field\">\n\t\t\t\t\t<label class=\"label\">Correo</label>\n\t\t\t\t\t<div class=\"control\">\n\t\t\t\t\t\t<input autofocus=true class=\"input\" name=\"email\" id=\"emailInput\" type=\"text\" placeholder=\"Ingrese su correo\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"field\">\n\t\t\t\t\t<label class=\"label\">Contraseña </label>\n\t\t\t\t\t<div  is-password=true class=\"control has-icons-right\"> \n\t\t\t\t\t\t<input class=\"input\" id=\"passwordInput\" name=\"password\" type=\"password\">\n\t\t\t\t\t\t<a>\n\t\t\t\t\t\t\t<span class=\"icon is-small is-right is-clickable\">\n\t\t\t\t\t\t\t\t<i class=\"fas fa-eye-slash\"></i>\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"field is-grouped\">\n\t\t\t\t\t<div class=\"control\"> \n\t\t\t\t\t\t<button class=\"button is-link\" id=\"loginBtn\">Iniciar Sesión</button>\n\t\t\t\t\t\t<a href=\"/signin\" class=\"button is-success\">Registrarse</a>\t\t\t\t\t \t\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>";
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
-
-/***/ }),
-
-/***/ "./node_modules/html-loader/dist/runtime/getUrl.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/html-loader/dist/runtime/getUrl.js ***!
-  \*********************************************************/
-/***/ ((module) => {
-
-
-
-module.exports = function (url, options) {
-  if (!options) {
-    // eslint-disable-next-line no-param-reassign
-    options = {};
-  }
-
-  if (!url) {
-    return url;
-  } // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-
-
-  url = String(url.__esModule ? url.default : url);
-
-  if (options.hash) {
-    // eslint-disable-next-line no-param-reassign
-    url += options.hash;
-  }
-
-  if (options.maybeNeedQuotes && /[\t\n\f\r "'=<>`]/.test(url)) {
-    return "\"".concat(url, "\"");
-  }
-
-  return url;
-};
-
-/***/ }),
-
 /***/ "./public/api/authRequests.js":
 /*!************************************!*\
   !*** ./public/api/authRequests.js ***!
@@ -106,73 +48,6 @@ function sigIn(body, callBack){
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({login, sigIn});
-
-/***/ }),
-
-/***/ "./public/assets/logo.png":
-/*!********************************!*\
-  !*** ./public/assets/logo.png ***!
-  \********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "824f6f609a2530740b6b.png";
-
-/***/ }),
-
-/***/ "./public/components/auth/AuthComponent.js":
-/*!*************************************************!*\
-  !*** ./public/components/auth/AuthComponent.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CardActionsComponent)
-/* harmony export */ });
-/* harmony import */ var _api_authRequests_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/authRequests.js */ "./public/api/authRequests.js");
-/* harmony import */ var _AuthComponent_ui_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AuthComponent-ui.html */ "./public/components/auth/AuthComponent-ui.html");
-/* harmony import */ var _base_component_BaseComponent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../base_component/BaseComponent.js */ "./public/components/base_component/BaseComponent.js");
-
-
-
-
-class CardActionsComponent extends _base_component_BaseComponent_js__WEBPACK_IMPORTED_MODULE_2__.default{
-
-  constructor(container) {
-  	super(container, _AuthComponent_ui_html__WEBPACK_IMPORTED_MODULE_1__.default);
-    this.uiElements = {
-    	loginBtn:{id:"#loginBtn"},
-    	passwordInput: {id:"#passwordInput", isPasswordInput:true},
-    	emailInput: {id:"#emailInput"},
-    };
-    super.addForm("formAction",this.uiElements.loginBtn);
-    super.addForm("formInput",this.uiElements.emailInput);
-    super.addForm("formInput",this.uiElements.passwordInput);
-  }
-
-  init(){
-  	super.init();
-  	let loginBtn = this.uiElements.loginBtn;
-    
-    loginBtn.el.addEventListener('click', ()=>{
-        loginBtn.load(true);
-        super.block("formInput");
-        super.block("formAction",loginBtn);
-      	let formObject = super.getValues("formInput");
-        let body = JSON.stringify(formObject);
-      	_api_authRequests_js__WEBPACK_IMPORTED_MODULE_0__.default.login(body, (res)=>{
-      		if(res.ok){
-				    window.location.replace("/");
-            return;
-      		}
-          super.unblock("formAction",loginBtn);
-          super.unblock("formInput");
-		      loginBtn.load(false);
-      	});
-    });
-
-  }
-}
 
 /***/ }),
 
@@ -446,6 +321,89 @@ baseHTML(){
 }
 }
 
+
+/***/ }),
+
+/***/ "./public/components/base_component/SinglePageComponent.js":
+/*!*****************************************************************!*\
+  !*** ./public/components/base_component/SinglePageComponent.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SinglePageComponent)
+/* harmony export */ });
+/* harmony import */ var _BaseComponent_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseComponent.js */ "./public/components/base_component/BaseComponent.js");
+
+
+
+class SinglePageComponent extends _BaseComponent_js__WEBPACK_IMPORTED_MODULE_0__.default{
+
+  constructor(container, html) {
+  	super(container, html);
+  }
+
+  init(){
+  	super.init();
+  }
+}
+
+/***/ }),
+
+/***/ "./public/components/sign_in/SignInComponent-ui.js":
+/*!*********************************************************!*\
+  !*** ./public/components/sign_in/SignInComponent-ui.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ html)
+/* harmony export */ });
+function html(){
+return `<div class="card">
+	<div class="card-content">
+		<div class="content">
+			<h1 class="title">Crear cuenta</h1>
+			<div class="field" for="nameInput">
+				<label class="label">Nombre</label>
+				<div class="control">
+					<input autocomplete="off" required class="input" name="name" id="nameInput" type="text" placeholder="Ingrese su nombre">
+				</div>
+			</div>
+			<div class="field" for="emailInput">
+				<label class="label">Correo</label>
+				<div class="control">
+					<input autocomplete="off" required class="input" name="email" id="emailInput" type="text" placeholder="Ingrese su correo">
+				</div>
+			</div>
+			<div class="field" for="passwordInput">
+				<label class="label">Contraseña </label>
+				<div class="control"> 
+					<input autocomplete="off" required class="input" id="passwordInput" name="password" type="password">
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">Tipo de usuario</label>
+				<div class="select">
+					<select id="typeOfUserSelect" name="typeOfUser">
+						<option value="CLIENT">Soy cliente</option>
+						<option value="BUSINESS">soy dueño de un negocio</option>
+					</select>
+				</div>
+			</div>
+			<div class="field is-grouped">
+				<div class="control"> 
+					<button class="button is-link" id="signInBtn">Registrarse</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>`
+
+}
 
 /***/ }),
 
@@ -854,6 +812,35 @@ function toggleClass (el, flag, newClass){
 
 /***/ }),
 
+/***/ "./public/utils/errorHandler.js":
+/*!**************************************!*\
+  !*** ./public/utils/errorHandler.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ handleError)
+/* harmony export */ });
+function handleError(error){
+	let errorContainer = document.createElement("div");
+
+	let errorBanner = document.createElement("p");;
+	errorBanner.innerHTML ="Something went wrong";
+	errorBanner.className = ["danger"];
+
+	let errorMsg = document.createElement("p");
+	errorMsg.innerHTML = error;
+	
+	errorContainer.appendChild(errorBanner);
+	errorContainer.appendChild(errorMsg);
+
+	document.getElementsByTagName("body")[0].appendChild(errorContainer);
+
+}
+
+/***/ }),
+
 /***/ "./shared/Curryng.mjs":
 /*!****************************!*\
   !*** ./shared/Curryng.mjs ***!
@@ -904,6 +891,82 @@ function getNestedProperty(index, paths, model){
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getProperty);
 
+/***/ }),
+
+/***/ "./shared/UserConstrains.mjs":
+/*!***********************************!*\
+  !*** ./shared/UserConstrains.mjs ***!
+  \***********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const UserConstrains = {
+
+  email: (user)=>{
+          if(!user.email)
+              return {typeOfError:"email", 
+                      errorMessage: "Ingrese su correo"}},
+
+  password: (user)=>{
+          if(!user.password)
+              return {typeOfError:"password", 
+                      errorMessage: "Ingrese su contraseña"}
+                       
+  },
+  name: (user)=>{
+          if(!user.name)
+              return {typeOfError:"name", 
+                      errorMessage: "Ingrese su Nombre"}
+                       
+  },
+  typeOfUser: (user)=>{
+          if(!user.typeOfUser)
+              return {typeOfError:"typeOfUser", 
+                      errorMessage: "Seleccione el tipo de usuario"}
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserConstrains);
+
+/***/ }),
+
+/***/ "./shared/ValidationUtils.mjs":
+/*!************************************!*\
+  !*** ./shared/ValidationUtils.mjs ***!
+  \************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+/**
+Curry validation 
+e.g. validate([],obj, fun1)(func2)(func3,1)
+**/
+function _validate(entity, errors=[]){
+	console.log(JSON.stringify(entity));
+	const f = (toVal, finish)=>{
+	 	  let error = toVal(entity);
+		  if(error){
+	         errors.push(error);
+		  }
+		  if(finish){
+		      return errors
+		  }else{
+		  	return f;
+		  }
+		}
+	return f;
+}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_validate);
+
 /***/ })
 
 /******/ 	});
@@ -932,22 +995,7 @@ function getNestedProperty(index, paths, model){
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -958,18 +1006,6 @@ function getNestedProperty(index, paths, model){
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
@@ -988,89 +1024,108 @@ function getNestedProperty(index, paths, model){
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/publicPath */
-/******/ 	(() => {
-/******/ 		var scriptUrl;
-/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
-/******/ 		var document = __webpack_require__.g.document;
-/******/ 		if (!scriptUrl && document) {
-/******/ 			if (document.currentScript)
-/******/ 				scriptUrl = document.currentScript.src
-/******/ 			if (!scriptUrl) {
-/******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
-/******/ 			}
-/******/ 		}
-/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
-/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
-/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
-/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
-/******/ 		__webpack_require__.p = scriptUrl;
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	(() => {
-/******/ 		__webpack_require__.b = document.baseURI || self.location.href;
-/******/ 		
-/******/ 		// object to store loaded and loading chunks
-/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
-/******/ 		var installedChunks = {
-/******/ 			"auth_app": 0
-/******/ 		};
-/******/ 		
-/******/ 		// no chunk on demand loading
-/******/ 		
-/******/ 		// no prefetching
-/******/ 		
-/******/ 		// no preloaded
-/******/ 		
-/******/ 		// no HMR
-/******/ 		
-/******/ 		// no HMR manifest
-/******/ 		
-/******/ 		// no on chunks loaded
-/******/ 		
-/******/ 		// no jsonp function
-/******/ 	})();
-/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!********************************!*\
-  !*** ./public/auth_app_src.js ***!
-  \********************************/
+/*!*****************************************************!*\
+  !*** ./public/components/sign_in/signin_app_src.js ***!
+  \*****************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_auth_AuthComponent_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/auth/AuthComponent.js */ "./public/components/auth/AuthComponent.js");
-// import handleError from "./utils/errorHandler.js"
-// 
+/* harmony import */ var _utils_errorHandler_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/errorHandler.js */ "./public/utils/errorHandler.js");
+/* harmony import */ var _api_authRequests_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/authRequests.js */ "./public/api/authRequests.js");
+/* harmony import */ var _SignInComponent_ui_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SignInComponent-ui.js */ "./public/components/sign_in/SignInComponent-ui.js");
+/* harmony import */ var _base_component_SinglePageComponent_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../base_component/SinglePageComponent.js */ "./public/components/base_component/SinglePageComponent.js");
+/* harmony import */ var _shared_ValidationUtils_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../shared/ValidationUtils.mjs */ "./shared/ValidationUtils.mjs");
+/* harmony import */ var _shared_UserConstrains_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../shared/UserConstrains.mjs */ "./shared/UserConstrains.mjs");
 
 
 
 
-function app(){
-		configureComponents();
+
+
+
+class SignInApp extends _base_component_SinglePageComponent_js__WEBPACK_IMPORTED_MODULE_3__.default{
+
+  constructor() {
+    let container = document.querySelector("#mainModule-ui");  
+  	super(container, (0,_SignInComponent_ui_js__WEBPACK_IMPORTED_MODULE_2__.default)());
+    this.uiElements = {
+    	signInBtn:{id:"#signInBtn"},
+    	passwordInput: {id:"#passwordInput"},
+    	emailInput: {id:"#emailInput"},
+      typeOfUserSelect: {id:"#typeOfUserSelect"},
+    	nameInput:{id:"#nameInput"}
+    };
+    this.hasError=false;
+    super.addForm("formAction",this.uiElements.signInBtn);
+    super.addForm("userObjectForm",this.uiElements.emailInput);
+    super.addForm("userObjectForm",this.uiElements.passwordInput);
+    super.addForm("userObjectForm",this.uiElements.nameInput);
+    super.addForm("userObjectForm",this.uiElements.typeOfUserSelect);
+  }
+
+  init(){
+  	super.init();
+    let signInBtn = this.uiElements.signInBtn;
+    
+    signInBtn.el.addEventListener('click', ()=>{
+
+        if(this.hasError){
+          super.clearAll("userObjectForm");  
+        }
+        signInBtn.load(true);
+        super.block("userObjectForm");
+        
+        super.block("formAction",signInBtn);
+        let formObject = super.getValues("userObjectForm")
+        let body = JSON.stringify(formObject);
+
+        let errors =(0,_shared_ValidationUtils_mjs__WEBPACK_IMPORTED_MODULE_4__.default)(formObject)
+                      (_shared_UserConstrains_mjs__WEBPACK_IMPORTED_MODULE_5__.default.email)
+                      (_shared_UserConstrains_mjs__WEBPACK_IMPORTED_MODULE_5__.default.password)
+                      (_shared_UserConstrains_mjs__WEBPACK_IMPORTED_MODULE_5__.default.name)
+                      (_shared_UserConstrains_mjs__WEBPACK_IMPORTED_MODULE_5__.default.typeOfUser,1);
+        if(errors.length>0){
+          this.hasError=true;
+          super.invalidate(errors);
+          super.unblock("userObjectForm");
+          signInBtn.load(false);
+          return;
+        }
+
+       
+        console.log(body);
+        _api_authRequests_js__WEBPACK_IMPORTED_MODULE_1__.default.sigIn(body, (res)=>{
+          super.unblock("formAction",signInBtn);
+          super.unblock("userObjectForm");
+          signInBtn.load(false);
+          if(res.ok){
+            window.location.replace("/");
+            return;
+          }else{
+            res.json().
+            then(errors=>{
+              this.hasError=true;
+              super.invalidate(errors);
+            });
+          }
+        });
+    });
+  }
 }
 
 
-function configureComponents(){
-	let authComponentContainer = document.querySelector("#mainModule-ui");	
-	let componentsArray = [];
-	componentsArray.push(new _components_auth_AuthComponent_js__WEBPACK_IMPORTED_MODULE_0__.default(authComponentContainer));
-	 componentsArray.forEach(el=>{
-	    console.log(el);
-	    el.init();
-	  });
-} 
 
 document.addEventListener('DOMContentLoaded', function() {
-		app();
-	
+  try{
+    new SignInApp().init();
+  }catch(error){
+    (0,_utils_errorHandler_js__WEBPACK_IMPORTED_MODULE_0__.default)(error);
+  }
  } , false);
-   
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=auth_app.js.map
+//# sourceMappingURL=signin_app.js.map
