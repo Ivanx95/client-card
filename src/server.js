@@ -10,15 +10,11 @@ let env =process.env.ENV;
 const http = env=="DEV"?require('http'):require('https');
 const port= env=="DEV"?8080:443;
 const serverProps={
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert'),
-     ca: [
-
-          fs.readFileSync('mycard_host/mycard_host.crt'),
-          fs.readFileSync('mycard_host/SectigoRSADomainValidationSecureServerCA.crt'),
-          fs.readFileSync('mycard_host/AAACertificateServices.crt'),
-          fs.readFileSync('mycard_host/USERTrustRSAAAACA.crt')
-       ]
+	key: fs.readFileSync('micard.host/private.key'),
+	cert: fs.readFileSync('micard.host/certificate.crt'),
+	ca: [
+		fs.readFileSync('micard.host/ca-bundle.crt')
+	]
 };
 
 const app = express();
@@ -28,14 +24,14 @@ app.use(express.static("shared"));
 app.disable('x-powered-by');
 var httpServer;
 if(env=="DEV"){
- httpServer = http.createServer(app);  
+	httpServer = http.createServer(app);  
 }else{
- httpServer= http.createServer(serverProps ,app);  
+	httpServer= http.createServer(serverProps ,app);  
 }
 
 
 const afterAppStarted = ()=>{
-  Logger.log({level:"info", message: `Example app listening on port ${port}! Go to ${env=="DEV"?"http":"https"}://localhost:${port}/`});
+	Logger.log({level:"info", message: `Example app listening on port ${port}! Go to ${env=="DEV"?"http":"https"}://localhost:${port}/`});
 };
 
 Logger.log({level:"info", message:"Create web socket server"});
