@@ -10,10 +10,10 @@ let env =process.env.ENV;
 const http = env=="DEV"?require('http'):require('https');
 const port= env=="DEV"?8080:443;
 const serverProps={
-	key: fs.readFileSync('micard.host/private.key'),
-	cert: fs.readFileSync('micard.host/certificate.crt'),
+	key: fs.readFileSync('mycard.host/private.key'),
+	cert: fs.readFileSync('mycard.host/certificate.crt'),
 	ca: [
-		fs.readFileSync('micard.host/ca-bundle.crt')
+		fs.readFileSync('mycard.host/ca-bundle.crt')
 	]
 };
 
