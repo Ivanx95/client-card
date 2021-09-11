@@ -10,11 +10,9 @@ let env =process.env.ENV;
 const http = env=="DEV"?require('http'):require('https');
 const port= env=="DEV"?8080:443;
 const serverProps={
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert'),
+    key: fs.readFileSync('mycard.host.key'),
+    cert: fs.readFileSync('mycard_host/mycard_host.crt'),
      ca: [
-
-          fs.readFileSync('mycard_host/mycard_host.crt'),
           fs.readFileSync('mycard_host/SectigoRSADomainValidationSecureServerCA.crt'),
           fs.readFileSync('mycard_host/AAACertificateServices.crt'),
           fs.readFileSync('mycard_host/USERTrustRSAAAACA.crt')
