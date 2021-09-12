@@ -4,4 +4,17 @@ const User= dataSource.models.User;
 
 const path ="/users";
 const express = require("express");
-const apiRouter = express.Router();
+const userRouter = express.Router();
+
+
+
+ userRouter.get(path.concat("/info"),(req,res)=>{
+ 	let userId = req.session.user.id;
+ 	User.findOne({where:{ userId: userId }})
+	.then((user)=>{
+        res.status(200).send(user);
+    });
+
+ });
+
+ module.exports = userRouter;

@@ -13,7 +13,7 @@ const serverProps={
 	key: fs.readFileSync('mycard.host/private.key'),
 	cert: fs.readFileSync('mycard.host/certificate.crt'),
 	ca: [
-		fs.readFileSync('mycard.host/ca-bundle.crt')
+		fs.readFileSync('mycard.host/ca_bundle.crt')
 	]
 };
 

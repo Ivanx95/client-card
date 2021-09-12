@@ -4,7 +4,7 @@ import RouterComponent from "./components/RouterComponent.js"
 
 const componentsArray = [];
 
-document.cookie = '{"user":{"name":"Ivan"}}';
+
 
 function configureComponents(){
 

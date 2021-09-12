@@ -1,6 +1,14 @@
 const path = "/auth";
 
 	
+
+
+function validate(email, callback){
+	fetch(`${path}/validate/${email}`)
+	.then(response => callback(response));
+}
+
+
 function createFormLoginOptions(body){
 
 	const headers = new Headers({
@@ -33,4 +41,4 @@ function sigIn(body, callBack){
 
 
 
-export default {login, sigIn};
+export default {login, sigIn,validate};

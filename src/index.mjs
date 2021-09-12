@@ -2,6 +2,7 @@ import Logger from "./logger/Logger.js";
 import apiRouter from "./api/cardController.js" ;
 import cardTemplateRouter from "./api/CardTemplateController.mjs" ;
 import brandRouter from "./api/BrandController.js" ;
+import userRouter from "./api/userController.js" ;
 import authRouter from "./api/auth.mjs";
 import fileRouter from "./api/fileController.js";
 import bodyParser  from 'body-parser';
@@ -57,6 +58,7 @@ const notLoggedUser = (req,res, next)=>{
 }
 
 app.use("/api", apiRouter);
+app.use("/api", userRouter);
 app.use("/api",notLoggedUser, brandRouter);
 app.use("/api",notLoggedUser, cardTemplateRouter);
 app.use("/auth", authRouter);
