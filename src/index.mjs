@@ -11,9 +11,7 @@ import cookieParser  from 'cookie-parser';
 import { app, startApp}  from "./server.js";
 
 import dataSource from "./db/model/DB.js";
-import path from 'path';
 
-const __dirname = path.resolve(path.dirname(decodeURI(new URL(import.meta.url).pathname)));
 
 Logger.log({level:"info", message: "Starting application"});
 
@@ -136,8 +134,8 @@ app.use((req,res, next)=>{
       message: "No user session found"
     });
 
-    /*res.redirect("/login");
-    return;*/
+    res.redirect("/login");
+    return;
   }
   Logger.log({
       level: 'info',
@@ -148,14 +146,12 @@ app.use((req,res, next)=>{
 });
 
 
-/*app.get("/", (req,res)=>{
+app.get("/", (req,res)=>{
   switchSession(req,res, req.session.user);
 
-});*/
-
-app.get("/", (req,res)=>{
-  res.sendFile(path.join(__dirname, '/147a24251dc96fa33a270f363b73aff8.html'));
 });
+
+
 
 app.get("/index", (req, res)=>{
   res.render('index.pug', {title:"Point Card"});
