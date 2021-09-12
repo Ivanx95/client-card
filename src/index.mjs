@@ -122,13 +122,10 @@ app.get("/users", (req, res) => {
 
 
 app.get("/", (req,res)=>{
-  console.log("Hi");
-  //switchSession(req,res, req.session.user);
-  res.render('login.pug', {});
-
+  switchSession(req,res, req.session.user);
 });
 
-/*app.use((req,res, next)=>{
+app.use((req,res, next)=>{
 
   if(req.originalUrl.startsWith("/api")||req.originalUrl.startsWith("/auth")){
     Logger.log({level:"info", message:"Ignoring call to api"})
@@ -151,7 +148,7 @@ app.get("/", (req,res)=>{
   });
   
   next();
-});*/
+});
 
 
 
