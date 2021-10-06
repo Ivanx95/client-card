@@ -63,7 +63,7 @@ fileRouter.post('/upload',function(req,res){
      return res.status(500).send(err);  
    }  
 
-   res.status(200).send({_brand});
+   res.redirect("/admin#companies");
    
  });  
 });  

@@ -79,13 +79,15 @@ app.get("/login", (req, res)=>{
     switchSession(req,res, req.session.user);
     return;
   }
-  res.render('login.pug', {});
+  let lang = req.headers["accept-language"]
+  res.render('login.pug', {title:"Tarjeta de puntos facilmente",  lang : lang});
 });
 
 
 
 app.get("/admin", (req, res)=>{
-  res.render('admin.pug', {title:"Point card"});
+  let lang = req.headers["accept-language"]
+  res.render('admin.pug', {title:"Point card",lang : lang});
 })
 
 
@@ -155,7 +157,8 @@ app.get("/", (req,res)=>{
 
 
 app.get("/index", (req, res)=>{
-  res.render('index.pug', {title:"Point Card"});
+   let lang = req.headers["accept-language"]
+  res.render('index.pug', {title:"Point Card", lang : lang});
 })
 
 

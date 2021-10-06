@@ -19,78 +19,86 @@ export default class RouterComponent{
     routerEl:{id:"#router"},
   };
 
-  this.outSideElements={ addCompany:{ id:"#addCompanyA"},
-  home: {id:"#home"}};
-  this.state={};
+  this.defaultController = {
+   controller:CardActionsComponent, 
+   id:'home'
+ };
 
-  this.nestedComponents = {
-    form:{ 
-      controller:FormScannerComponent,
-      id:'f'
-    },
-    actionButtons:{
-     controller:CardActionsComponent, 
-     id:'a'
-   },
-   scanner:{
-     controller:QrReaderComponent, 
-     id:'s'
-   },
-   addBrand:{
-    controller: AddBrandComponent,
-    id: 'add'
+ this.outSideElements={ addCompany:{ id:"#addCompanyA"},
+ home: {id:"#home"}};
+ this.state={};
+
+ this.nestedComponents = {
+  form:{ 
+    controller:FormScannerComponent,
+    id:'f'
   },
-  seeBrands:{
-    controller: BrandTableComponent,
-    id: 'see'
-  },
-  seeTemplates: {
-    controller: CardTemplateViewerController,
-    id: 'seeT'
-  }
+  actionButtons: this.defaultController,
+  scanner:{
+   controller:QrReaderComponent, 
+   id:'s'
+ },
+ seeTemplates: {
+   controller: CardTemplateViewerController,
+   id: 'seeT'
+ },
+
+ addBrand:{
+  controller: AddBrandComponent,
+  id: 'add'
+},
+seeBrands:{
+  controller: BrandTableComponent,
+  id: 'companies'
+}
 };
 this.currentComponent = this.nestedComponents.actionButtons;
 }
 
 
-init(){
- for (let key in this.uiElements) {
-  this.uiElements[key].el = this.container.querySelector(this.uiElements[key].id);
-}
-
-for (let key in this.outSideElements) {
-  let element = this.outSideElements[key];
-  element.el = document.querySelector(element.id);
-}
-
-
-this.outSideElements.addCompany.el.addEventListener("click", ()=>{
-  this.onChange('see');
-});
-
-this.outSideElements.home.el.addEventListener("click", ()=>{
-  this.onChange('a');
-});
-
-
-this.onChange('see');
-}
-
-onChange(id, state){
-  konsole.log(`Configuring: ${id}`);
-  let comp;
-  for (let key in this.nestedComponents) {
-    if(this.nestedComponents[key].id == id){
-      comp = this.nestedComponents[key];
+  init(){
+     for (let key in this.uiElements) {
+      this.uiElements[key].el = this.container.querySelector(this.uiElements[key].id);
     }
+
+    for (let key in this.outSideElements) {
+      let element = this.outSideElements[key];
+      element.el = document.querySelector(element.id);
+    }
+
+    window.onhashchange = ()=>{
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        this.onChange(hash);
+    }
+    var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+    if(hash){
+      this.onChange(hash);  
+    }else{
+      this.onChange('home');    
+    }
+
   }
-  DomUtils.removeAllChildNodes(this.uiElements.routerEl.el);
-  const controller = new DynamicClass(
-    comp.controller,{
-      container: this.uiElements.routerEl.el ,
-      callBack: (id, state)=>this.onChange(id, state),
-      state: state
-    });
-  controller.init();
-}
+
+  onChange(id, state){
+    konsole.log(`Configuring: ${id}`);
+    let comp;
+    for (let key in this.nestedComponents) {
+      if(this.nestedComponents[key].id == id){
+        comp = this.nestedComponents[key];
+        break;
+      }
+    }
+
+    if(!comp){
+      comp = this.defaultController;
+    }
+    DomUtils.removeAllChildNodes(this.uiElements.routerEl.el);
+    const controller = new DynamicClass(
+      comp.controller,{
+        container: this.uiElements.routerEl.el ,
+        callBack: (id, state)=>this.onChange(id, state),
+        state: state
+      });
+    controller.init();
+  }
 }

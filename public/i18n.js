@@ -1,19 +1,10 @@
-import escape from "./utils/stringUtils.js";
 
-const pattern = "${0}";
+import init from "../shared/i18n.js";
 
-const messageEs = [
-	{id:"greeting", value:"Bienvenido ${0}"}
-]
+console.log("Initializing i18n");
 
-function interpolate( template, data){
-  let result = template.replace(pattern, data);
-  return escape(result);
-}
+let i18n =  init(document.documentElement.lang);
 
-function moneyMatcher(input){
-	let result = input.match(this.moneyPattern);
-	return result;
-}
 
-export default {messageEs, interpolate, moneyMatcher};
+export default i18n;
+

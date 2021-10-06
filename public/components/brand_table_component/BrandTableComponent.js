@@ -1,4 +1,6 @@
 import DomUtils from "../../utils/DomUtils.js";
+import i18n from "../../i18n.js";
+import i18next from 'i18next';
 import BaseComponent from "../base_component/BaseComponent.js";
 import requests from "../../api/request.js" 
 
@@ -28,7 +30,9 @@ export default class BrandTableComponent extends BaseComponent{
       
    });
 
-  let title =DomUtils.create("h1","title","Mis empresas");
+  
+  let myCompaniesStr = i18next.t("lbl_my_companies");
+  let title =DomUtils.create("h1","title",myCompaniesStr);
   this.uiElements.mainComponent.el.appendChild(title);
 
   }
