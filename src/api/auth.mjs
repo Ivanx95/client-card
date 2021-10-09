@@ -3,6 +3,14 @@ import express from "express";
 import dataSource from "../db/model/DB.js";
 import  _validate from "../../shared/ValidationUtils.mjs";
 import UserConstrains from "../../shared/UserConstrains.mjs";
+import crypto from "crypto"; 
+import  dotenv from "dotenv";
+
+dotenv.config();
+
+let salt =process.env.SALT;
+
+
 const User = dataSource.models.User;
 
 const authRouter = express.Router();
@@ -60,6 +68,13 @@ authRouter.post("/signup",(req,res)=>{
    res.status(400).send(errors);
    return;
  }
+
+ let hash =crypto.pbkdf2Sync(user.password, salt,  
+    1000, 64, `sha512`).toString(`hex`).substring(0,100); 
+
+
+  user.password = hash;
+
  User.findOne({
   where:{email:req.body.email}})
  .then(userFound=>{
@@ -108,8 +123,13 @@ authRouter.post("/loginuser",(req,res)=>{
     return;
   }
 
+  let hash =crypto.pbkdf2Sync(user.password, salt,  
+    1000, 64, `sha512`).toString(`hex`).substring(0,100); 
+
+  
+
   User.findAll({limit: 1,
-    where:{email:req.body.email, password: req.body.password}})
+    where:{email:req.body.email, password: hash}})
   .then(users=>{
     if(!users|| users.length <1){
       Logger.log({
