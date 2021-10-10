@@ -6,6 +6,9 @@ const express = require("express");
 dotenv.config();
 
 let env =process.env.ENV;
+let stripekey =process.env.STRIPE_KEY;
+
+const stripe = require('stripe')(stripekey);
 
 const http = env=="DEV"?require('http'):require('https');
 const port= env=="DEV"?8080:443;
@@ -44,4 +47,4 @@ const startApp = ()=>{
 io.on("connection", socket =>{
 	Logger.log({level:"info", message:`On connection: ${socket.id}`});
 });
-module.exports = {httpServer: httpServer, app: app,startApp:startApp, wsServer:io};
+module.exports = {httpServer: httpServer, app: app,startApp:startApp, wsServer:io, stripe:stripe};

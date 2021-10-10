@@ -7,6 +7,7 @@ import AddBrandComponent from "./add_brand/AddBrandComponent.js";
 import BrandTableComponent from "./brand_table_component/BrandTableComponent.js";
 import CardActionsComponent from "./CardActionsComponent.js"
 import QrReaderComponent from "./qreader/qrReaderComponent.js"
+import PaymentComponent from "./payment/PaymentComponent.js";
 import DomUtils from "../utils/DomUtils.js";
 import konsole from "../utils/Utils.js";
 
@@ -46,11 +47,15 @@ export default class RouterComponent{
  addBrand:{
   controller: AddBrandComponent,
   id: 'add'
-},
-seeBrands:{
-  controller: BrandTableComponent,
-  id: 'companies'
-}
+  },
+  seeBrands:{
+    controller: BrandTableComponent,
+    id: 'companies'
+  },
+  payment:{
+    controller: PaymentComponent,
+    id: 'payment'
+  }
 };
 this.currentComponent = this.nestedComponents.actionButtons;
 }

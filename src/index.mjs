@@ -8,9 +8,10 @@ import fileRouter from "./api/fileController.js";
 import bodyParser  from 'body-parser';
 import session  from 'express-session';
 import cookieParser  from 'cookie-parser';
-import { app, startApp}  from "./server.js";
+import { app, startApp, stripe}  from "./server.js";
 
 import dataSource from "./db/model/DB.js";
+
 
 
 Logger.log({level:"info", message: "Starting application"});
@@ -23,6 +24,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cookieParser());
 app.use(session({secret: "1234"}));
+
+app.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'mxn',
+          product_data: {
+            name: 'T-shirt',
+          },
+          unit_amount: 1000,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'https://mycard.host/',
+    cancel_url: 'https://mycard.host/#payments',
+  });
+
+  res.redirect(303, session.url);
+});
+
 
 app.use((req,res, next)=>{
   if(req.session.user){
