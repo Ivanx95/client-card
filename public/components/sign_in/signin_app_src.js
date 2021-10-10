@@ -27,6 +27,16 @@ class SignInApp extends SinglePageComponent{
 
   init(){
   	super.init();
+
+    let templateCardIDstr = window.location.hash.substring(1);
+    if(templateCardIDstr){
+      console.log("Form url contains params");
+      console.log(templateCardIDstr);
+      this.uiElements.typeOfUserSelect.el.value="CLIENT";
+      this.uiElements.typeOfUserSelect.el.disabled=true;
+      this.templateCardID = templateCardIDstr;
+    }
+
     let signInBtn = this.uiElements.signInBtn;
     
     signInBtn.el.addEventListener('click', ()=>{
@@ -34,11 +44,17 @@ class SignInApp extends SinglePageComponent{
         if(this.hasError){
           super.clearAll("userObjectForm");  
         }
+
         signInBtn.load(true);
         super.block("userObjectForm");
         
         super.block("formAction",signInBtn);
         let formObject = super.getValues("userObjectForm")
+
+        if(this.templateCardID){
+          formObject.templateCardID =this.templateCardID;
+        }
+        
         let body = JSON.stringify(formObject);
 
         let errors =_validate(formObject)
@@ -46,6 +62,7 @@ class SignInApp extends SinglePageComponent{
                       (UserConstrains.password)
                       (UserConstrains.name)
                       (UserConstrains.typeOfUser,1);
+
         if(errors.length>0){
           this.hasError=true;
           super.invalidate(errors);
@@ -53,8 +70,7 @@ class SignInApp extends SinglePageComponent{
           signInBtn.load(false);
           return;
         }
-
-       
+        
         console.log(body);
         requests.sigIn(body, (res)=>{
           super.unblock("formAction",signInBtn);

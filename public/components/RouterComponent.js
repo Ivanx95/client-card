@@ -72,10 +72,10 @@ this.currentComponent = this.nestedComponents.actionButtons;
     }
 
     window.onhashchange = ()=>{
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        let hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
         this.onChange(hash);
     }
-    var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+    let hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
     if(hash){
       this.onChange(hash);  
     }else{

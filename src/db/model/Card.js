@@ -5,6 +5,7 @@ module.exports = function(dataSource, DataTypes){
     	type: DataTypes.INTEGER,
     	allowNull: false,
     	field: 'CARD_ID',
+        autoIncrement: true,
         primaryKey:true,
     },
     level:{ 

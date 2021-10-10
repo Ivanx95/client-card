@@ -37,7 +37,6 @@ export default class CardTemplateViewerController extends BaseComponent{
 		});	
 	}
 	constructor({container,state, callBack}) {
-		console.log(html);
 		super(container,html, [{name:"brand"}]);	
 		const apply2  =  this.apply.bind(this);
 		let pctgIcon = {id:"#pctgIcon"};
@@ -97,8 +96,9 @@ export default class CardTemplateViewerController extends BaseComponent{
 				colorDark: this.state.brand.brandColor,
 				logo: this.state.brand.logoURL
 			});
-			
-			this.qrcode.makeCode(cardTemplate.value);
+			const url  = `${window.location.protocol}${window.location.hostname}/signin#${cardTemplate.value}`;
+			console.log(`Invitation url : ${url}`);
+			this.qrcode.makeCode(url);
 		});
 	}
 
