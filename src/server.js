@@ -11,7 +11,7 @@ let stripekey =process.env.STRIPE_KEY;
 const stripe = require('stripe')(stripekey);
 
 const http = env=="DEV"?require('http'):require('https');
-const port= env=="DEV"?8080:443;
+const port= env=="DEV"?80:443;
 const serverProps={
 	key: fs.readFileSync('mycard.host/private.key'),
 	cert: fs.readFileSync('mycard.host/certificate.crt'),
