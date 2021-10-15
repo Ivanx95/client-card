@@ -74,7 +74,8 @@ export default class qrReaderComponent extends BaseComponent{
     canvasElement.hidden = true;
     console.log(`Found ${uuid}`);
     console.log(state);
-    requests.credit(2,uuid,state.total,(data)=>{
+    let operatorId = window.localStorage.getItem("userId");
+    requests.credit(operatorId,uuid,state.total,(data)=>{
         console.log("Credit gave it successfully");
         alert(`Credit: ${data.points}  gave it successfully`);
         callback('a');

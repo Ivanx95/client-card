@@ -12,6 +12,7 @@ export default class GreetingComponent extends BaseComponent {
   constructor(container) {
   	super(container, html);
     this.uiElements = {greetingTitle:{id:"#greeting"}};
+    this.idStorage = window.localStorage;
   }
 
   init(){
@@ -23,6 +24,7 @@ export default class GreetingComponent extends BaseComponent {
 		
 		let greetingMsg = i18next.t('greeting', {user:data.name});	
 		greetingTitle.innerHTML = greetingMsg;
+		this.idStorage.setItem("userId",data.userId);
 		
 	});
 	
