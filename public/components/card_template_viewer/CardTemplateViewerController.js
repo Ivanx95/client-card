@@ -4,6 +4,7 @@ import html from "./card_template_viewer-ui.html";
 import ActionDecorator from "../../decorators/ActionDecorator.js"
 import  {modal} from "../authorization/AuthorizaionComponent.js";
 import  CardTemplateModalController from "../card_template_viewer/CardTemplateModalController.js";
+import  DomUtils from "../../utils/DomUtils.js";
 
 const  redentionText = (prtcg)=>{
 return `El porcentaje de redención es el valor que
@@ -41,6 +42,7 @@ export default class CardTemplateViewerController extends BaseComponent{
 		const apply2  =  this.apply.bind(this);
 		let pctgIcon = {id:"#pctgIcon"};
 		let rdtnIcon = {id:"#rdtnIcon"};
+		let qrContentMessage = {id:"#qrMessage"};
 		let cdtPrctgInput = {id:"#cdtPrctgInput", decorator:{class: ActionDecorator, action:apply2 }};
 		let rdtPrctgInput = {id:"#rdtPrctgInput", decorator:{class: ActionDecorator, action:apply2 }};
 		let saveBtn =  {id:"#saveBtn", listener:{event:"click", fallBack: apply2}};
@@ -50,7 +52,8 @@ export default class CardTemplateViewerController extends BaseComponent{
 			rdtnIcon,
 			cdtPrctgInput,
 			rdtPrctgInput,
-			saveBtn
+			saveBtn,
+			qrContentMessage
 		};
 		this.qrcode = null;
 		this.callBack = callBack;
@@ -72,7 +75,10 @@ export default class CardTemplateViewerController extends BaseComponent{
 		super.init(); 
 
 		
-		
+			let spanElement = DomUtils.createAppend("SPAN","icon",this.uiElements.qrContentMessage.el);
+			let shareButton = DomUtils.createAppend("i","fa fa-share-alt",spanElement);
+			this.uiElements.shareButton = {el:shareButton};
+
 		let brandId = this.state.brand.brandId;
 		requests.getCartdsTemplate(brandId, (cardTemplates)=>{
 			let cardTemplate = cardTemplates[0];
@@ -98,6 +104,19 @@ export default class CardTemplateViewerController extends BaseComponent{
 			});
 			const url  = `${window.location.protocol}${window.location.hostname}/signin#${cardTemplate.value}`;
 			console.log(`Invitation url : ${url}`);
+
+			if(this.uiElements.shareButton){
+				 this.uiElements.shareButton.el.addEventListener("click",()=>{
+					 navigator.share({
+					    title: 'Quesito',
+					    text: `Hola!, te invito a usar la tarjeta de puntos de ${this.brandName}`,
+					    url: url,
+					  })
+		    		  .then(() => console.log('Successful share'))
+			    	  .catch((error) => console.log('Error sharing', error));
+				});
+			}
+			
 			this.qrcode.makeCode(url);
 		});
 	}
