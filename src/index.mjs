@@ -123,6 +123,7 @@ app.get("/signin",(req,res)=>{
       res.render('signin.pug',params);
     });
   }
+  res.render('signin.pug',params);
   
 });
 
