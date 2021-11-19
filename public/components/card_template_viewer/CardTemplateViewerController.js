@@ -75,10 +75,16 @@ export default class CardTemplateViewerController extends BaseComponent{
 		super.init(); 
 
 		
-			let spanElement = DomUtils.createAppend("SPAN","icon",this.uiElements.qrContentMessage.el);
-			let shareButton = DomUtils.createAppend("i","fa fa-share-alt",spanElement);
-			this.uiElements.shareButton = {el:shareButton};
+			let shareButton = document.createElement("i");
+			shareButton.className = "fa fa-share-alt";
+			
+			let spanElement = document.createElement("span");
+			shareButton.spanElement = "fa fa-share-alt";
 
+			spanElement.appendChild(shareButton);
+			this.uiElements.qrContentMessage.el.appendChild(spanElement);
+			this.uiElements.shareButton = {el:shareButton};
+			
 		let brandId = this.state.brand.brandId;
 		requests.getCartdsTemplate(brandId, (cardTemplates)=>{
 			let cardTemplate = cardTemplates[0];
@@ -102,22 +108,23 @@ export default class CardTemplateViewerController extends BaseComponent{
 				colorDark: this.state.brand.brandColor,
 				logo: this.state.brand.logoURL
 			});
-			const url  = `${window.location.protocol}${window.location.hostname}/signin#${cardTemplate.value}`;
-			console.log(`Invitation url : ${url}`);
+			const urlInvitation  = `${window.location.protocol}//${window.location.hostname}/signin#${cardTemplate.value}`;
+			console.log(`Invitation url : ${urlInvitation}`);
 
+			alert(urlInvitation);
 			if(this.uiElements.shareButton){
 				 this.uiElements.shareButton.el.addEventListener("click",()=>{
 					 navigator.share({
 					    title: 'Quesito',
 					    text: `Hola!, te invito a usar la tarjeta de puntos de ${this.brandName}`,
-					    url: url,
+					    url: urlInvitation,
 					  })
 		    		  .then(() => console.log('Successful share'))
 			    	  .catch((error) => console.log('Error sharing', error));
 				});
 			}
 			
-			this.qrcode.makeCode(url);
+			this.qrcode.makeCode(urlInvitation);
 		});
 	}
 
