@@ -28,8 +28,11 @@ class SignInApp extends SinglePageComponent{
   init(){
   	super.init();
 
-    let templateCardIDstr = window.location.hash.substring(1);
-    if(templateCardIDstr){
+    const params = new URLSearchParams(window.location.search);
+    let templateCardIDstr;
+    
+    if(params.has("brandId")){
+      templateCardIDstr = params.get("brandId")
       console.log("Form url contains params");
       console.log(templateCardIDstr);
       this.uiElements.typeOfUserSelect.el.value="CLIENT";
