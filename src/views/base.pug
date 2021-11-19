@@ -11,6 +11,11 @@ html(lang=lang)
 		link(rel="stylesheet" href="/main.css")
 		link(rel="stylesheet" href="/toolTip.css")
 		meta(name="viewport", content="width=device-width, initial-scale=1")
+		if hasMeta
+			meta(property="og:type" content="website")
+			meta(property="og:title" content=metaTitle)
+			meta(property="og:image:url" content=metaImage)
+
 
 body
 	

@@ -11,7 +11,7 @@ import cookieParser  from 'cookie-parser';
 import { app, startApp, stripe}  from "./server.js";
 
 import dataSource from "./db/model/DB.js";
-
+const CardTemplate = dataSource.models.CardTemplate;
 
 
 Logger.log({level:"info", message: "Starting application"});
@@ -92,11 +92,38 @@ app.use("/file", fileRouter);
 
 
 app.get("/signin",(req,res)=>{
+
+ let lang = req.headers["accept-language"];
  if(req.session.user){
     switchSession(req,res, req.session.user);
     return;
   }
-  res.render('signin.pug', {});
+
+  let brandId = req.query.brandId; 
+  let title = `Inscribite a la tarjeta de puntos de ${brandId}`
+  let params = {title: title,  lang : lang};
+  if(brandId){
+    params.hasMeta = true;
+    params.metaTitle = `Inscribite a la tarjeta de puntos de ${brandId}`;
+
+    CardTemplate.findOne({
+      where: {value: brandId},
+      include: [
+      {
+        model: dataSource.models.Brand,
+        as:'brand',
+        required :true
+      }]
+    }).then((cardTemplate)=>{
+
+      var domain = req.protocol + '://' + req.get('Host');
+      if(cardTemplate){
+        params.metaImage = `${domain}/${cardTemplate.brand.logoURL}`;
+      }
+      res.render('signin.pug',params);
+    });
+  }
+  
 });
 
 app.get("/login", (req, res)=>{
