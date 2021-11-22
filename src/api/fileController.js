@@ -15,7 +15,7 @@ const saveFile = async function (req, file, callback) {
   const fileName = uuidv4()+fileExtension;
 
   const brand = {}; 
-  brand.name = req.body.name;
+  brand.name = req.body.name.trim();
   brand.brandColor = req.body.brandColor;
   brand.logoURL = "file/"+fileName;
 

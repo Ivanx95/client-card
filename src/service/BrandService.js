@@ -10,8 +10,7 @@ const saveBrand = async function (fileName, brand, callback) {
 
  let result = await dataSource.transaction(async (t) => {
 
-   console.log("HI");
-
+   
    let savedBrand = await Brand.create(brand, {transaction: t});
 
     const _brand = savedBrand.dataValues;
@@ -22,7 +21,7 @@ const saveBrand = async function (fileName, brand, callback) {
     });
 
     const cardTemplate = {};
-    cardTemplate.value = uuidv4();
+    cardTemplate.value = brand.name.replace(/ /g,"-");
     cardTemplate.creditPercentage = 0.1;
     cardTemplate.redemptionPercentage = 0.1;
     cardTemplate.BRAND_ID =  _brand.brandId;

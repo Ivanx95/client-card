@@ -108,7 +108,7 @@ export default class CardTemplateViewerController extends BaseComponent{
 				colorDark: this.state.brand.brandColor,
 				logo: this.state.brand.logoURL
 			});
-			const urlInvitation  = `${window.location.protocol}//${window.location.hostname}/signin?brandId=${cardTemplate.value}`;
+			const urlInvitation  = `${window.location.protocol}//${window.location.hostname}/signin/${cardTemplate.value}`;
 			console.log(`Invitation url : ${urlInvitation}`);
 
 			alert(urlInvitation);

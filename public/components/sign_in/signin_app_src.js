@@ -15,6 +15,7 @@ class SignInApp extends SinglePageComponent{
     	passwordInput: {id:"#passwordInput"},
     	emailInput: {id:"#emailInput"},
       typeOfUserSelect: {id:"#typeOfUserSelect"},
+      typeOfUserField: {id:"#typeOfUserField"},
     	nameInput:{id:"#nameInput"}
     };
     this.hasError=false;
@@ -27,16 +28,17 @@ class SignInApp extends SinglePageComponent{
 
   init(){
   	super.init();
-
-    const params = new URLSearchParams(window.location.search);
+    let brandIdPathPAram = window.location.pathname.split(/signin/)[1];
+    
     let templateCardIDstr;
     
-    if(params.has("brandId")){
-      templateCardIDstr = params.get("brandId")
+    if(brandIdPathPAram){
+      templateCardIDstr = brandIdPathPAram;
       console.log("Form url contains params");
       console.log(templateCardIDstr);
       this.uiElements.typeOfUserSelect.el.value="CLIENT";
-      this.uiElements.typeOfUserSelect.el.disabled=true;
+      this.uiElements.typeOfUserField.el.style.display = "none";
+
       this.templateCardID = templateCardIDstr;
     }
 

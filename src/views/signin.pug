@@ -1,6 +1,8 @@
 extends base.pug
 
 block content1
+	if hasInvitaton
+	block landing_page
 	section(class="section")
 		div(class="container")
 			div(class="columns")
@@ -8,7 +10,13 @@ block content1
 				div(class="column is-four-fifths") 
 					div(class="hero")
 						div(class="container")
-							div(id="mainModule-ui")
+							div(class="card")
+								block cardImage
+								div(class="card-content")
+									div(class="content")
+										block cardContent
+									div(class="content" id="mainModule-ui")
+										
 				div(class="column")
 	
 block js1

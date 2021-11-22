@@ -1,0 +1,27 @@
+
+extends signin.pug
+block cardImage
+	div(class="card-image")
+		figure(class="image is-4by3")
+			img(src=metaImage alt="Logotipo de empresa")
+    
+block cardContent  
+	p 	Subscribete a la tarjeta de puntos de  #{brandName}.
+		
+
+
+block additionalHeaders
+	link(rel="stylesheet" href="/css/backgrounds.css")
+
+block landing_page
+	script(type="module").
+		import  {standText}  from "/utils/cssUtils.js";
+		standText("#{brandColor}","nav", "nav","nav a.navbar-item");
+		
+	
+	nav(class="navbar" role="navigation" aria-label="main navigation")
+		div(class="navbar-brand") 
+			a(class="navbar-item",href="#home") 
+				img(id="logo" src="/assets/logo.png" width="60" height="70")
+				p My points
+

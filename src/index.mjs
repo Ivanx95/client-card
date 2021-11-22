@@ -91,7 +91,7 @@ app.use("/auth", authRouter);
 app.use("/file", fileRouter);
 
 
-app.get("/signin",(req,res)=>{
+app.get("/signin/:brandId?",(req,res)=>{
 
  let lang = req.headers["accept-language"];
  if(req.session.user){
@@ -99,13 +99,20 @@ app.get("/signin",(req,res)=>{
     return;
   }
 
-  let brandId = req.query.brandId; 
-  let title = `Inscribite a la tarjeta de puntos de ${brandId}`
-  let params = {title: title,  lang : lang};
+  let brandId = req.params.brandId; 
+  let title = `Inscripcion a mycard`
+  let params = {lang : lang};
   if(brandId){
+    title = `Inscribite a la tarjeta de puntos de ${brandId}`;
+    params.title = title;
     params.hasMeta = true;
     params.metaTitle = `Inscribite a la tarjeta de puntos de ${brandId}`;
+    params.hasInvitation = true;
 
+      Logger.log({
+        level:"info",
+        message: "Sign in from invitation"
+      });
     CardTemplate.findOne({
       where: {value: brandId},
       include: [
@@ -118,11 +125,20 @@ app.get("/signin",(req,res)=>{
 
       var domain = req.protocol + '://' + req.get('Host');
       if(cardTemplate){
+        params.brandName = cardTemplate.brand.name;
         params.metaImage = `${domain}/${cardTemplate.brand.logoURL}`;
+        params.brandColor = cardTemplate.brand.brandColor;
+      }else{
+        Logger.log({
+          level:"info",
+          message: "Brand of invitation not found or not valid"
+        });
       }
-      res.render('signin.pug',params);
+      res.render('invitation.pug',params);
     });
+    return;
   }
+  params.title = title;
   res.render('signin.pug',params);
   
 });

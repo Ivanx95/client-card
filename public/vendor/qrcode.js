@@ -239,12 +239,14 @@ var QRCode;
 			var nCount = oQRCode.getModuleCount();
 			var nWidth = Math.floor(_htOption.width / nCount);
 			var nHeight = Math.floor(_htOption.height / nCount);
-			var aHTML = ['<table style="border:0;border-collapse:collapse;" id="qrElement">'];
+			var aHTML = ['<table style="border:0;border-collapse:collapse;" margin:0; id="qrElement">'];
 			
 			var drawCell = function(width, height, color){
 				return '<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:' + width + 'px;height:' + height + 'px;background-color:' + color + ';"></td>'
 			}
-				let imageHtml = `<img src="${_htOption.logo}" width="${8*nWidth}" height="${8*nHeight}">`;
+
+				let imageHtml = `<img src="${_htOption.logo}">`
+				
 				let offset = Math.floor(nCount/2);
 
 				let nCountIndexMax=offset+4;
@@ -255,7 +257,7 @@ var QRCode;
 					if((row>=nCountIndexMin && row<nCountIndexMax)){
 						if(col>=nCountIndexMin && col<nCountIndexMax){
 							if(row==nCountIndexMin&&col==nCountIndexMin){
-							 	aHTML.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:' + nWidth + 'px;height:' + nHeight + 'px;background-color:#ffffff;" colspan="8" rowspan="8">'+imageHtml+'</td>');
+							 	aHTML.push('<td style="border:0;border-collapse:collapse;padding:5px;margin:0;width:' + nWidth + 'px;height:' + nHeight + 'px;background-color:#ffffff;" colspan="8" rowspan="8">'+imageHtml+'</td>');
 							 	console.log("Creating logo html table cell");
 							}
 						}else{
@@ -278,10 +280,8 @@ var QRCode;
 			var elTable = _el.childNodes[0];
 			var nLeftMarginTable = (_htOption.width - elTable.offsetWidth) / 2;
 			var nTopMarginTable = (_htOption.height - elTable.offsetHeight) / 2;
+			elTable.style.margin = "auto";
 			
-			if (nLeftMarginTable > 0 && nTopMarginTable > 0) {
-				elTable.style.margin = nTopMarginTable + "px " + nLeftMarginTable + "px";	
-			}
 		};
 		
 		/**
@@ -404,7 +404,7 @@ var QRCode;
 			async function waitImage(ctx, image, x,y, height, width){
 			    return new Promise(resolve => {
 			          img.onload = function () {
-			                ctx.drawImage(image, x,y, height*7,width*7);
+			                ctx.drawImage(image, x+5,y+5, (height*7)-5,(width*7)-5);
 			                resolve('resolved');
 			             }
 
