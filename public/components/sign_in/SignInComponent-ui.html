@@ -14,9 +14,14 @@
 			</div>
 			<div class="field" for="passwordInput">
 				<label class="label" for="passwordInput">Contraseña </label>
-				<div class="control"> 
-					<input autocomplete="off" required class="input" id="passwordInput" name="password" type="password">
-				</div>
+				<div  is-password=true class="control has-icons-right"> 
+						<input  autocomplete="off" class="input" id="passwordInput" name="password" type="password">
+						<a>
+							<span class="icon is-small is-right is-clickable">
+								<i class="fas fa-eye-slash"></i>
+							</span>
+						</a>
+					</div>
 			</div>
 			<div class="field" id="typeOfUserField">
 				<label class="label">Tipo de usuario</label>

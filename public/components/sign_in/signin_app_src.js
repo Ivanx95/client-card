@@ -12,7 +12,7 @@ class SignInApp extends SinglePageComponent{
   	super(container, html);
     this.uiElements = {
     	signInBtn:{id:"#signInBtn"},
-    	passwordInput: {id:"#passwordInput"},
+    	passwordInput: {id:"#passwordInput",isPasswordInput:true},
     	emailInput: {id:"#emailInput"},
       typeOfUserSelect: {id:"#typeOfUserSelect"},
       typeOfUserField: {id:"#typeOfUserField"},
