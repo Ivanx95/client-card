@@ -28,7 +28,7 @@ class SignInApp extends SinglePageComponent{
 
   init(){
   	super.init();
-    let brandIdPathPAram = window.location.pathname.split(/signin/)[1];
+    let brandIdPathPAram = window.location.pathname.split("/signin/")[1];
     
     let templateCardIDstr;
     

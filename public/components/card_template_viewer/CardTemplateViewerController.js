@@ -111,7 +111,6 @@ export default class CardTemplateViewerController extends BaseComponent{
 			const urlInvitation  = `${window.location.protocol}//${window.location.hostname}/signin/${cardTemplate.value}`;
 			console.log(`Invitation url : ${urlInvitation}`);
 
-			alert(urlInvitation);
 			if(this.uiElements.shareButton){
 				 this.uiElements.shareButton.el.addEventListener("click",()=>{
 					 navigator.share({

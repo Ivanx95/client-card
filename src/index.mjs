@@ -133,6 +133,8 @@ app.get("/signin/:brandId?",(req,res)=>{
           level:"info",
           message: "Brand of invitation not found or not valid"
         });
+        res.render('signin.pug',params);
+        return;
       }
       res.render('invitation.pug',params);
     });

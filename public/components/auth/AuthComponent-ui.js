@@ -1,20 +1,22 @@
-	<div class="card">
+function html(){
+
+	return 	`<div class="card">
 		<div class="card-image">
 			<figure class="image is-4by3">
-				<img src="/public/assets/logo.png">
+				<img src="/assets/logo.png">
 			</figure>
 		</div>
 		<div class="card-content">
 			<div class="content">
 				<h1 class="title">Iniciar sesión</h1>
-				<div class="field">
-					<label class="label">Usuario</label>
+				<div class="field" for="emailInput">
+					<label class="label" for="emailInput">Usuario</label>
 					<div class="control">
 						<input autofocus=true class="input" name="email" id="emailInput" type="text" placeholder="Ingrese su usuario">
 					</div>
 				</div>
 				<div class="field">
-					<label class="label">Contraseña </label>
+					<label class="label" for="passwordInput">Contraseña </label>
 					<div  is-password=true class="control has-icons-right"> 
 						<input class="input" id="passwordInput" name="password" type="password">
 						<a>
@@ -32,4 +34,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>`
+}
+
+export default html;

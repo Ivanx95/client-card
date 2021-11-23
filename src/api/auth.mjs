@@ -106,13 +106,13 @@ else {
   if(user.templateCardID){
 
     CardTemplate.findOne({where:{value:user.templateCardID}})
-    .then(CardTemplate=>{
+    .then(cardTemplate=>{
       let newCard = {};
       newCard.level = 0;
       newCard.points = 0;
       newCard.value = v4();
       newCard.OWNER_ID = savedUser.userId;
-      newCard.CARD_TEMPLATE_ID = CardTemplate.cardId;
+      newCard.CARD_TEMPLATE_ID = cardTemplate.cardId;
       Card.create(newCard).then(resultCard=>{
         let sessionUser = {id:savedUser.userId, name:savedUser.name, typeOfUser: savedUser.typeOfUser};
         req.session.user = sessionUser;
