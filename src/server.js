@@ -22,8 +22,9 @@ const serverProps={
 
 const app = express();
 app.use(express.static("public"));
+app.use(express.static("free_money"));
 app.use(express.static("audio_visualizer"));
-app.use(express.static("shared"));
+app.use(express.static("shared",{maxAge: '20000'}));
 
 app.disable('x-powered-by');
 var httpServer;
