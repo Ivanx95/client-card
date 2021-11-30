@@ -215,7 +215,7 @@ app.use((req,res, next)=>{
   }
   Logger.log({
       level: 'info',
-      message: "User session found"
+      message: "General handler: User session found"
   });
   
   next();
@@ -223,12 +223,14 @@ app.use((req,res, next)=>{
 
 
 app.get("/", (req,res)=>{
+   console.log("On Root call")
   switchSession(req,res, req.session.user);
 });
 
 
 app.get("/index", (req, res)=>{
-   let lang = req.headers["accept-language"]
+  console.log("On index");
+  let lang = req.headers["accept-language"]
   res.render('index.pug', {title:"Point Card", lang : lang});
 })
 
@@ -236,6 +238,7 @@ app.get("/index", (req, res)=>{
 
 function switchSession(req, res, user){
    
+   console.log("on switch session");
     Logger.log({
       level: 'info',
       message: `Type of user: ${user.typeOfUser}`
