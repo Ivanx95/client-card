@@ -3,7 +3,11 @@ function html(){
 	return 	`<div class="card">
 		<div class="card-image">
 			<figure class="image is-4by3">
-				<img src="/assets/logo.png">
+				<picture>
+				  <img
+					 decoding="async" loading="lazy"
+					src="/assets/logo.avif" alt="Logo Image" />
+			    </picture>
 			</figure>
 		</div>
 		<div class="card-content">
