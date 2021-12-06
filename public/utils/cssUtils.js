@@ -13,6 +13,14 @@ function toggleClass (el, flag, newClass){
 	  	}
 }
 
+function addclass(el, newClass) {
+	let className = el.className;
+	if(!className.includes(newClass)){
+		el.className = className.concat(" "+newClass);
+	}
+}
+
+
 
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -99,4 +107,4 @@ function standText(color, item, content){
 	}
 
 	
-export {loading,danger,toggleClass, consoleStyle, standText};
+export {loading,danger,toggleClass, addclass, consoleStyle, standText};

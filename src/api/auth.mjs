@@ -31,20 +31,20 @@ authRouter.get("/validate/:email",(req,res)=>{
   User.findOne({
     where:{email:email}})
   .then(userFound=>{
-      if(userFound){
-       let emailErrors = [];
-       let alreadyExistingEmail  = 
-       { 
-        typeOfError:"email", 
-        errorMessage: `El correo ${email} ya se encuentra usado`
-      };
-      emailErrors.push(alreadyExistingEmail);
-      res.status(400).send(emailErrors);
-    }
-    else {
-      return  res.status(200).send({});
-    }
-  });
+    if(userFound){
+     let emailErrors = [];
+     let alreadyExistingEmail  = 
+     { 
+      typeOfError:"email", 
+      errorMessage: `El correo ${email} ya se encuentra usado`
+    };
+    emailErrors.push(alreadyExistingEmail);
+    res.status(400).send(emailErrors);
+  }
+  else {
+    return  res.status(200).send({});
+  }
+});
 });
 
 
@@ -67,65 +67,70 @@ authRouter.post("/signup",(req,res)=>{
     level:"debug",
     message: `Erros found ${JSON.stringify(errors)}`
   });
+
   if(errors.length > 0){
 
-   res.status(400).send(errors);
-   return;
- }
+     res.status(400).send(errors);
+     return;
+  }
 
- let hash =crypto.pbkdf2Sync(user.password, salt,  
-    1000, 64, `sha512`).toString(`hex`).substring(0,100); 
+  let hash =crypto.pbkdf2Sync(user.password, salt,  
+  1000, 64, `sha512`).toString(`hex`).substring(0,100); 
 
 
   user.password = hash;
 
- User.findOne({
-  where:{email:req.body.email}})
- .then(userFound=>{
-  if(userFound){
-   let emailErrors = [];
-   let alreadyExistingEmail  = 
-   { 
-    typeOfError:"email", 
-    errorMessage: `El correo ${user.email} ya se encuentra usado`
-  };
-  emailErrors.push(alreadyExistingEmail);
-  res.status(400).send(emailErrors);
-}
-else {
-  return  User.create(user);
-}
-}).then((savedUser)=>{
-  savedUser = savedUser.dataValues;
+  User.findOne({where:{email:req.body.email}})
+      .then(userFound=>{
+        if(userFound){
+         let emailErrors = [];
+         let alreadyExistingEmail  = 
+         { 
+          typeOfError:"email", 
+          errorMessage: `El correo ${user.email} ya se encuentra usado`
+        };
+        emailErrors.push(alreadyExistingEmail);
+        res.status(400).send(emailErrors);
+        }else {
+          return  User.create(user);
+        }})
+      .then((savedUser)=>{
+        savedUser = savedUser.dataValues;
 
-  Logger.log({
-    level:"info",
-    message: JSON.stringify(user)
-  });
+        Logger.log({
+          level:"info",
+          message: JSON.stringify(user)
+        });
 
-  if(user.templateCardID){
+        if(user.templateCardID){
 
-    CardTemplate.findOne({where:{value:user.templateCardID}})
-    .then(cardTemplate=>{
-      let newCard = {};
-      newCard.level = 0;
-      newCard.points = 0;
-      newCard.value = v4();
-      newCard.OWNER_ID = savedUser.userId;
-      newCard.CARD_TEMPLATE_ID = cardTemplate.cardId;
-      Card.create(newCard).then(resultCard=>{
-        let sessionUser = {id:savedUser.userId, name:savedUser.name, typeOfUser: savedUser.typeOfUser};
-        req.session.user = sessionUser;
-        res.status(200).send({});
-      })
-    })
-    return;
-  }
+          CardTemplate.findOne({where:{value:user.templateCardID}})
+          .then(cardTemplate=>{
+            let newCard = {};
+            newCard.level = 0;
+            newCard.points = 0;
+            newCard.value = v4();
+            newCard.OWNER_ID = savedUser.userId;
+            newCard.CARD_TEMPLATE_ID = cardTemplate.cardId;
+            Card.create(newCard).then(resultCard=>{
+              if(!resultCard){
+                console.log("Card not saved")
+              }
+              let sessionUser = {id:savedUser.userId, name:savedUser.name, typeOfUser: savedUser.typeOfUser};
+              req.session.user = sessionUser;
+              console.log(`Card created: ${resultCard.cardId}`);
+              res.redirect(`/index?cardId=${resultCard.cardId}`);
+            })
+          })
 
-  let sessionUser = {id:savedUser.userId, name:savedUser.name, typeOfUser: savedUser.typeOfUser};
-  req.session.user = sessionUser;
-  res.status(200).send({});
-});
+          return;
+        }
+
+      let sessionUser = {id:savedUser.userId, name:savedUser.name, typeOfUser: savedUser.typeOfUser};
+      req.session.user = sessionUser;
+      res.status(200).send({});
+      return;
+    });
 });
 
 
