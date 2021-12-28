@@ -32,8 +32,14 @@ module.exports = function(dataSource, DataTypes){
     	field: 'USER_TYPE_CD'
     }
    
-  },{tableName:'USR', timestamps: false});
- console.log("Created users model");
+  },
+  {tableName:'USR', timestamps: false});
+
+  console.log("Created users model");
+
+  User.associate = (models) =>{
+    User.hasMany(models.Card, {as:'cards', foreignKey: 'OWNER_ID'});
+  };
 
  return User;
 }

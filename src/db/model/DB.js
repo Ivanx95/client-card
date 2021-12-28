@@ -12,7 +12,7 @@ console.log(`DB name: ${dbName}`);
 const dataSource = new Sequelize(dbName,dbUser, dbPwd, 
 	                            { host: dbHost,
 								  dialect: 'mysql',
-								  logging: false,
+							   	  logging: console.log,
 								  pool: {
 								    max: 5,
 								    min: 0,
@@ -32,6 +32,7 @@ const bootstrap = dataSource.sync();
 models.Brand.associate(models);
 models.CardTemplate.associate(models);
 models.Card.associate(models);
+models.User.associate(models);
 
 console.log("Models sync up");
 

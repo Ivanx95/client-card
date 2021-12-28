@@ -1,7 +1,10 @@
 const Logger = require("../logger/Logger.js");
 const dataSource = require("../db/model/DB.js");
 const {wsServer} = require("../server.js");
+const Sequelize = require("sequelize");
+
 const Card= dataSource.models.Card;
+const User= dataSource.models.User;
 
 const path ="/cards";
 const express = require("express");
@@ -34,7 +37,7 @@ const includeUntilBrand = [{
 						    	}]
 						   }];
 
-const findCardByUUID = (cardId, operatorID)=>{
+const findCardByUUIDAndOwner = (cardId, ownerId)=>{
 	return Card.findAll({
 			  where: {
 			    value: cardId,
@@ -50,7 +53,7 @@ const findCardByUUID = (cardId, operatorID)=>{
 				    	as:'brand',
 				    	required :true,
 				    	where:{
-				    		USER_ID: operatorID
+				    		USER_ID: ownerId
 				    	}
 				    }]
 				}]}
@@ -82,12 +85,92 @@ apiRouter.get(path,function(req, res) {
     }).then(cards=> res.status(200).send(cards));
 });
 
+
+apiRouter.put(`${path}/clients/brand/:brandId/disable`,function(req, res) {
+	let cardId = req.body.cardId;
+	let brandId = req.params.brandId;
+	let logMessage = `Params, cardId: ${cardId}, brandId: ${brandId}`;
+	Logger.log({level:"info",message:logMessage});
+	Card.findOne({
+			  where: {
+			    cardId: cardId,
+			  },
+			  include: [
+				{
+				    model: dataSource.models.CardTemplate,
+				    as: 'template',
+				    required: true,
+				    include: [
+				    {
+				    	model: dataSource.models.Brand,
+				    	as:'brand',
+				    	required :true,
+				    	where:{
+				    		brandId: brandId
+				    	}
+				    }]
+				}]})
+	.then(Card=>{
+		Card.enable=false;
+		Card.save();
+		Logger.log({level:"info",message:"Card disable successfully"});
+		res.status(200).send({});	
+	});
+});
+
+apiRouter.get(`${path}/clients/brand/:brandId`,function(req, res) {
+	
+	let brandId = req.params.brandId;
+	let limit =  req.query.limit;
+	let offset =  req.query.offset;
+
+	Logger.log({level:"info",message:"Request on get clients by brand"});
+
+
+	dataSource.query(`Select 
+					  	CARD.CARD_ID as cardId, USR.NAME,
+					  	CARD.POINTS AS points,
+					  	CARD.ENABLE AS enable
+					  from USR 
+					  inner join CARD 
+					  	on CARD.OWNER_ID = USR.USER_ID
+					  INNER JOIN CARD_TEMPLATE 
+					  	on CARD.CARD_TEMPLATE_ID = CARD_TEMPLATE.CARD_TEMPLATE_ID
+				  	  INNER JOIN BRAND
+					  	on BRAND.BRAND_ID = CARD_TEMPLATE.BRAND_ID
+			  		  WHERE BRAND.BRAND_ID = :brandId
+			  		  GROUP BY CARD.CARD_ID, USR.NAME, CARD.POINTS, CARD.ENABLE 
+			  		  ${limit? "LIMIT  "+limit: ""}
+			  		  ${offset? "OFFSET "+offset: ""}
+					  `,
+	  {model: User,
+	   mapToModel: true,
+	   type: dataSource.QueryTypes.SELECT,
+	   replacements: { brandId: brandId} 
+	  })
+	  .then(users=>{
+				dataSource.query(`Select count(CARD.CARD_ID) as total 
+									from USR inner join CARD on CARD.OWNER_ID = USR.USER_ID 
+									INNER JOIN CARD_TEMPLATE on CARD.CARD_TEMPLATE_ID = CARD_TEMPLATE.CARD_TEMPLATE_ID 
+									INNER JOIN BRAND on BRAND.BRAND_ID = CARD_TEMPLATE.BRAND_ID  
+			  		  				WHERE BRAND.BRAND_ID = :brandId`,
+						  {type: dataSource.QueryTypes.SELECT,
+						   replacements: { brandId: brandId} 
+						  })
+			  			.then(total => {
+			  				let totalOfQuery = total[0].total;
+							let paginationResponse = {total:totalOfQuery, hits: users};
+			  				res.status(200).send(paginationResponse);
+			  			});
+	  });
+});
+
 apiRouter.post(`${path}/:uuid`,function(req, res) {
 	let uuid = req.params.uuid;
 	console.log(`Request on get request with uuid ${uuid}`);
 	let operatorID = req.body.operatorID;
 
-	findCardByUUID(uuid,operatorID)
+	findCardByUUIDAndOwner(uuid,operatorID)
 	.then((cards)=>{
         return transformCards(cards);
     })
@@ -106,18 +189,20 @@ apiRouter.post(`${path}/:uuid`,function(req, res) {
 apiRouter.post("/transactions/credit/:cardId",function(req, res) {
 			Logger.log({level:"info",message:"Request of transaction"});
 			let uuid = req.params.cardId;
-			let operatorID = req.body.operatorID;
+			let ownerId = req.body.ownerId;
 
 			Logger.log({level:"info",message:JSON.stringify(req.body)});
 			let totalSale = req.body.totalSale;
 
-			findCardByUUID(uuid, operatorID)
+			findCardByUUIDAndOwner(uuid, ownerId)
 			.then((cards)=> transformCards(cards))
 			.then((cards)=>{
-				console.log(`Cards: ${cards}`);
+				
 				if(cards.length != 0){
 					const points=totalSale*cards[0].creditPercentage;
-					console.log(`Points gained: ${points}`);	
+					
+					Logger.log({level:"info",
+								message:`Points gained: ${points}`});
 					const userID = cards[0].OWNER_ID;
 
 					Card.increment('points', { by: points, where: { value: uuid }})
@@ -138,45 +223,58 @@ apiRouter.post("/transactions/credit/:cardId",function(req, res) {
 
 apiRouter.route("/transactions/redeem/:cardId/calculate")
 		 .post(function(req, res) {
-			console.log("Request of calculation");
+
+			Logger.log({level:"info",
+						message:"Request of calculation"});
 
 			let uuid = req.params.cardId;
-			let operatorID = req.body.operatorID;
+			let ownerId = req.body.ownerId;
 
 			console.log(req.body);
-			calculatePointsToSubstract(operatorID,uuid)
+			calculatePointsToSubstract(ownerId,uuid)
 			.then(({money, noResult})=>{
 				if(noResult){
 					res.status(405).send({error:"No cards found belonging to this operators"});
 				}
 
-				console.log(`Money got: ${money}`);
-
-				res.status(200).send({money:money});
+				
+				Logger.log({level: "info", message: `Money got: ${money}`})
+				res.status(200).send({total:money});
 			})
 		});
 
 apiRouter.route("/transactions/redeem/:cardId")
 		 .post(function(req, res) {
-			console.log("Request of transaction");
+			
+
+			Logger.log({level:"info",
+						message:"Request of redemption"});
 
 			let uuid = req.params.cardId;
-			let operatorID = req.body.operatorID;
+			let ownerId = req.body.ownerId;
 
-			console.log(req.body);
-			calculatePointsToSubstract(operatorID,uuid)
-			.then(({money, noResult})=>{
+			
+			calculatePointsToSubstract(ownerId,uuid)
+			.then(({money, noResult,card})=>{
+				
 				if(noResult){
 					res.status(405).send({error:"No cards found belonging to this operators"});
 				}
 
-				console.log(`Money got: ${money}`);
+				Logger.log({level:"info",
+						message:`Money redemmed: ${money}`});
 
-				return Card.update({points:0},{where:{value:uuid}})
-			})
-			.then(()=>{
-				res.status(200).send();
+			 	Card.update({points:0},{where:{value:uuid}})
+			 	.then(()=>{
+			 		const userID = card.OWNER_ID;
+					card.points = 0;
+					Logger.log({level:"info",
+								message:`Sending update to ${userID} of card ${JSON.stringify(card)}`});
+			 		wsServer.emit(`send/${userID}`, JSON.stringify(card));
+					res.status(200).send();
+				});
 			});
+			
 		});
 
 
@@ -185,7 +283,7 @@ apiRouter.route("/transactions/redeem/:cardId")
 
 function calculatePointsToAdd(operatorID, cardId, saleTotal){
 	console.log(`Operatorid: ${operatorID}`);
-	return findCardByUUID(cardId, operatorID)
+	return findCardByUUIDAndOwner(cardId, operatorID)
 				.then((cards)=> transformCards(cards))
 				.then((cards)=>{
 					console.log(`Cards: ${cards}`);
@@ -200,14 +298,14 @@ function calculatePointsToAdd(operatorID, cardId, saleTotal){
 
 function calculatePointsToSubstract(operatorID, cardId){
 	console.log(`Operatorid: ${operatorID}`);
-	return findCardByUUID(cardId,operatorID)
+	return findCardByUUIDAndOwner(cardId,operatorID)
 				.then((cards)=> transformCards(cards))
 				.then((cards)=>{
 					console.log(`Cards: ${cards}`);
 					let card = cards[0];
 					if(cards.length != 0){
 						console.log(`Cards: ${card.points}`);
-						return {money: card.redemptionPercentage * card.points };	
+						return {money: card.redemptionPercentage * card.points, card:cards[0] };	
 					}else{
 						return {noResult:true};
 					}

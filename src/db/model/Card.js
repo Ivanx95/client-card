@@ -18,6 +18,11 @@ module.exports = function(dataSource, DataTypes){
         allowNull: true,
         field: 'POINTS'
     },
+    enable: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true 
+    },
     //uuid identificator
     //whats going to be show in the app
     value: {

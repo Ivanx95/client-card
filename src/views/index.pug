@@ -2,13 +2,19 @@ extends baseHomePages.pug
 
 block content
 	section(class="section")
-
 		div(class="container")
 			div(class="columns")
 				div(class="column")
 				div(class="column is-four-fifths" id="card-column-ui")
 				div(class="column")
-		div(class="container",id="card-table")
+		div(class="container")
+			div(class="columns")
+				div(class="column")
+				div(class="column is-four-fifths")
+					article(class="panel is-primary" id="card-table")
+						p(class="panel-heading") Tus tarjetas de puntos
+				div(class="column")
+		
 
 
 block js
