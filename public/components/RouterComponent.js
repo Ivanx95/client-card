@@ -6,7 +6,9 @@ import DynamicClass from "../utils/DynamicClass.js";
 import AddBrandComponent from "./add_brand/AddBrandComponent.js";
 import BrandTableComponent from "./brand_table_component/BrandTableComponent.js";
 import CardActionsComponent from "./CardActionsComponent.js"
+//import AdminClientComponent from "./preact_components/AdminClientComponent.js"
 import QrReaderComponent from "./qreader/qrReaderComponent.js"
+import RedeemQRReaderComponent from "./form_scanning/RedeemQRReaderComponent.js"
 import PaymentComponent from "./payment/PaymentComponent.js";
 import DomUtils from "../utils/DomUtils.js";
 import konsole from "../utils/Utils.js";
@@ -30,33 +32,41 @@ export default class RouterComponent{
  this.state={};
 
  this.nestedComponents = {
-  form:{ 
-    controller:FormScannerComponent,
-    id:'f'
-  },
-  actionButtons: this.defaultController,
-  scanner:{
-   controller:QrReaderComponent, 
-   id:'s'
- },
- seeTemplates: {
-   controller: CardTemplateViewerController,
-   id: 'seeT'
- },
+	  form:{ 
+	    controller:FormScannerComponent,
+	    id:'f'
+	  },
+	  actionButtons: this.defaultController,
+	scanner:{
+	   controller:QrReaderComponent, 
+	   id:'s'
+	 },
+   redeemScanner:{
+     controller:RedeemQRReaderComponent, 
+     id:'rS'
+   },
+	 seeTemplates: {
+	   controller: CardTemplateViewerController,
+	   id: 'seeT'
+	 },
 
- addBrand:{
-  controller: AddBrandComponent,
-  id: 'add'
-  },
-  seeBrands:{
-    controller: BrandTableComponent,
-    id: 'companies'
-  },
-  payment:{
-    controller: PaymentComponent,
-    id: 'payment'
-  }
-};
+	 addBrand:{
+	  controller: AddBrandComponent,
+	  id: 'add'
+	  },
+	  seeBrands:{
+	    controller: BrandTableComponent,
+	    id: 'companies'
+	  },
+	  payment:{
+	    controller: PaymentComponent,
+	    id: 'payment'
+	  }/*,  
+	  clients:{
+	    controller: AdminClientComponent,
+	    id: 'clients'
+	  }*/
+	};
 this.currentComponent = this.nestedComponents.actionButtons;
 }
 

@@ -23,6 +23,11 @@ export default class CardActionsComponent extends BaseComponent{
     this.creditBtn.addEventListener('click', ()=>{
       this.callBack('f');
     });
+
+    this.uiElements.redemBtn.el.addEventListener('click', ()=>{
+      this.callBack('rS');
+    });
+
   }
 
   getCreditBtn(){

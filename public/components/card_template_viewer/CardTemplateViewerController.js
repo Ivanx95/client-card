@@ -5,6 +5,7 @@ import ActionDecorator from "../../decorators/ActionDecorator.js"
 import  {modal} from "../authorization/AuthorizaionComponent.js";
 import  CardTemplateModalController from "../card_template_viewer/CardTemplateModalController.js";
 import  DomUtils from "../../utils/DomUtils.js";
+import AdminClientComponent from "../preact_components/AdminClientComponent.js"
 
 const  redentionText = (prtcg)=>{
 return `El porcentaje de redención es el valor que
@@ -50,6 +51,7 @@ export default class CardTemplateViewerController extends BaseComponent{
 			qrComponent: {id:"#qrHolder"},
 			pctgIcon,
 			rdtnIcon,
+			cardClients: {id:"#card_clients"},
 			cdtPrctgInput,
 			rdtPrctgInput,
 			saveBtn,
@@ -59,6 +61,7 @@ export default class CardTemplateViewerController extends BaseComponent{
 		this.callBack = callBack;
 		this.state =  state;
 		this.cardTemplateId = null;
+
 	}
 
 	qRSizes(pageWidth){
@@ -72,18 +75,19 @@ export default class CardTemplateViewerController extends BaseComponent{
 	}
 
 	init(){
+
 		super.init(); 
-
 		
-			let shareButton = document.createElement("i");
-			shareButton.className = "fa fa-share-alt";
-			
-			let spanElement = document.createElement("span");
-			shareButton.spanElement = "fa fa-share-alt";
+		
+		let shareButton = document.createElement("i");
+		shareButton.className = "fa fa-share-alt";
+		
+		let spanElement = document.createElement("span");
+		shareButton.spanElement = "fa fa-share-alt";
 
-			spanElement.appendChild(shareButton);
-			this.uiElements.qrContentMessage.el.appendChild(spanElement);
-			this.uiElements.shareButton = {el:shareButton};
+		spanElement.appendChild(shareButton);
+		this.uiElements.qrContentMessage.el.appendChild(spanElement);
+		this.uiElements.shareButton = {el:shareButton};
 			
 		let brandId = this.state.brand.brandId;
 		requests.getCartdsTemplate(brandId, (cardTemplates)=>{
@@ -125,6 +129,10 @@ export default class CardTemplateViewerController extends BaseComponent{
 			
 			this.qrcode.makeCode(urlInvitation);
 		});
+
+		this.adminClientController = new AdminClientComponent(this.uiElements.cardClients.el);
+		this.adminClientController.init(brandId);
+
 	}
 
 }

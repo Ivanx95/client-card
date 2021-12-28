@@ -10,17 +10,32 @@ export default class qrReaderComponent extends BaseComponent{
   }
 
   
+  codeFound(uuid){
+    this.canvas.hidden = true;
+    console.log(`Found ${uuid}`);
+    console.log(this.state);
+    let operatorId = window.localStorage.getItem("userId");
+    requests.credit(operatorId,uuid,this.state.total,(data)=>{
+        console.log("Credit gave it successfully");
+        alert(`Credit: ${data.points}  gave it successfully`);
+        this.callback('a');
+    });
+   }
+
   init(){
    var state = this.state;
    var callback = this.callback;
    var video = document.createElement("video");
-   var canvasElement = document.getElementById("canvas");
+   this.canvas = document.getElementById("canvas");
+   let canvasElement = this.canvas;
    var loadingMessage = document.getElementById("loadingMessage");
    var outputContainer = document.getElementById("output");
    var outputMessage = document.getElementById("outputMessage");
    var outputData = document.getElementById("outputData");
    var canvas = canvasElement.getContext("2d");
-  var stream;
+   var stream;
+   let that = this;
+
    function drawLine(begin, end, color) {
       canvas.beginPath();
       canvas.moveTo(begin.x, begin.y);
@@ -51,7 +66,7 @@ export default class qrReaderComponent extends BaseComponent{
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
-          codeFound(code.data);
+          that.codeFound(code.data);
           stopVideoOnly(video.srcObject);
           return;
         } else {
@@ -70,17 +85,7 @@ export default class qrReaderComponent extends BaseComponent{
       });
   }
 
-   function codeFound(uuid){
-    canvasElement.hidden = true;
-    console.log(`Found ${uuid}`);
-    console.log(state);
-    let operatorId = window.localStorage.getItem("userId");
-    requests.credit(operatorId,uuid,state.total,(data)=>{
-        console.log("Credit gave it successfully");
-        alert(`Credit: ${data.points}  gave it successfully`);
-        callback('a');
-    });
-   }
+   
     
   // Use facingMode: environment to attemt to get the front camera on phones
     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
