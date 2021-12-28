@@ -38,6 +38,13 @@ function configureComponents(){
 	
 } 
 
+function selectCard(cardComponent, cardEl){
+	let targetCard= store.cards.find(card=>{
+				return card.cardId == cardEl.cardId;
+			})
+	cardComponent.createCardElement(targetCard);
+}
+
 function app(){
   
   configureComponents(); 
@@ -53,30 +60,37 @@ function app(){
 	  const cardHolder = document.getElementById("card-table");
 	  requests.getCardsByClient(currentUserId,cards =>{
 		  cards.forEach(cardEl=>{
-		    let row = document.createElement('div');
-		    row.className = ["columns"];
-			let row1 = document.createElement('div');
+		    let row = document.createElement('a');
+		    row.className = ["panel-block"];
+			let span = document.createElement('span');
 			
-			row1.className = ["column"];
+			span.className = ["panel-icon"];
+			let iconElement = document.createElement('i');
+			
+			iconElement.className = ["fas fa-book"];
+			iconElement['aria-hidden'] = true;
+			
+			let button = document.createElement('p');
+			
+			button.innerHTML = escape(cardEl.brand.name);
 
-			let brandButton = document.createElement('button');
-			brandButton.className = ["button is-fullwidth"];
-			brandButton.innerHTML = escape(cardEl.brand.name);
 
-			row1.appendChild(brandButton);
+			span.appendChild(iconElement);
 
-			row.appendChild(row1);
-			row.cardId = cardEl.cardId;
+			row.appendChild(span);
+			row.appendChild(button);
 			row.addEventListener("click",()=>{
-			let targetCard= store.cards.find(card=>{
-				return card.cardId == row.cardId;
-			})
-			cardComponent.createCardElement(targetCard);
+				selectCard(cardComponent, cardEl);
 			});
 
 			cardHolder.appendChild(row);
 		});
 		store.cards = cards;
+
+		if(cards.length == 1){
+			selectCard(cardComponent, cards[0]);
+		}
+
 	   });
 	});
 
