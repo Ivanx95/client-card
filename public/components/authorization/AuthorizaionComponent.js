@@ -10,10 +10,10 @@ const FORM_NAME = "formInput";
 class AuthorizaionComponent extends SinglePageComponent{
 
 	constructor() {
-		let container = document.querySelector("#modal");  
+		let container = document.querySelector("#mainModal");  
 		super(container,html);
 
-		this.modal  = {id:"#modal"};
+		this.modal  = {id:"#modalCard"};
 		this.cancelButton =  {id:"#cancelBtn"};
 		this.acceptBtn  ={id:"#acceptBtn"};
 		this.closeBtn  ={id:"#closeBtn"};

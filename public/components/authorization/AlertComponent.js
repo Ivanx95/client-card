@@ -13,11 +13,12 @@ class AlertComponent extends SinglePageComponent{
 		let container = document.querySelector("#modal");  
 		super(container,html);
 
-		this.modal  = {id:"#modal"};
+		this.modal  = {id:"#modalCard"};
 		this.cancelButton =  {id:"#cancelBtn"};
 		this.acceptBtn  ={id:"#acceptBtn"};
 		this.closeBtn  ={id:"#closeBtn"};
 		this.content = {id:"#content"};
+		let card = container.querySelector(".modal-card");  
 
 		this.uiElements = {
 			modal: this.modal,
@@ -30,6 +31,17 @@ class AlertComponent extends SinglePageComponent{
 		this.state= {
 			closed: false
 		}
+
+		let closeFunction = function(e) {
+  	 		if (e.key === "Escape") {
+    			this.hide();
+  			} 
+  		}
+
+		let closeFunctionBind = closeFunction.bind(this);
+
+  		card.onkeyup = closeFunctionBind;
+  		this.card = card;
 	}
 
 	clearContent(){
@@ -62,7 +74,7 @@ class AlertComponent extends SinglePageComponent{
 		this.state.closed=true;
 		toggleClass(this.uiElements.modal.el,
 			this.state.closed, "is-active");
-		
+		this.card.focus();
 		this.callBack = callBack;
 	}
 

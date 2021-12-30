@@ -11,9 +11,14 @@ export default class CardComponent extends BaseComponent{
 		qrComponent: {id:"#qrHolder"},
 		cardTitle: {id:"#card-title"},
 		cardPoints: {id:"#card-points"},
+		codeP: {id: "#codeP"}
 	};
-	this.mapColor = {"1":"#ff0000","2":"#ff00ff"};
-    
+	
+    this.container.onkeyup = function(e) {
+  	 		if (e.ctrlKey && e.which == 66) {
+    			alert("Ctrl + B shortcut combination was pressed");
+  			} 
+  		}
   }
 
   qRSizes(pageWidth){
@@ -35,8 +40,16 @@ export default class CardComponent extends BaseComponent{
 	  	let pageWidth = document.body.clientWidth;
 		let width, height;
 		width = height = this.qRSizes(pageWidth);
-	
-		let qrColor  = this.mapColor[card.brand.brandColor]||"#000000";
+
+		
+		JsBarcode("#barcode", card.value,		
+		{ 
+		 height: 40,
+		 displayValue: false,
+		 lineColor: card.brand.brandColor});
+		this.uiElements.codeP.el.innerHTML = `Código: ${card.value}`;
+		let qrColor = card.brand.brandColor;
+
   		this.qrcode = new QRCode(this.uiElements.qrComponent.el, {
 						width : width,
 						height : height,

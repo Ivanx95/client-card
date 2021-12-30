@@ -20,6 +20,7 @@ export default class AdminClientcomponent extends Component  {
 		super();
 		this.container = container;
 		this.brandId = brandID;
+		
 	}
 
 	disable(cardId, brandId, that){

@@ -20,6 +20,7 @@ export default class CardActionsComponent extends BaseComponent{
   	super.init();
     this.greetingComponent.init();
   	this.creditBtn = this.uiElements.creditBtn.el;
+
     this.creditBtn.addEventListener('click', ()=>{
       this.callBack('f');
     });
@@ -28,6 +29,13 @@ export default class CardActionsComponent extends BaseComponent{
       this.callBack('rS');
     });
 
+   document.onkeyup = (e) =>{
+      if (e.ctrlKey && e.key == 'c') {
+        this.callBack('f');
+      } else if (e.ctrlKey && e.key == 'b') {
+        this.callBack('rS');
+      }
+    }
   }
 
   getCreditBtn(){
