@@ -7,7 +7,7 @@ export default class PaginationComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {  currentPage: props.current, 
+    this.state = {  
     				pageSize:props.pageSize, 
     				totalPages: Math.ceil(props.total/props.pageSize) };
   }
@@ -23,35 +23,35 @@ export default class PaginationComponent extends Component {
 
   	let beforeCurrent; 
   	let afterCurrent;
-  	let current = html`<a class="pagination-link is-current" aria-label="Goto page ${this.state.currentPage}">${this.state.currentPage}</a>`;
-  	let first = this.createStep(1);
+  	let current = html`<a class="pagination-link is-current" aria-label="Goto page ${this.props.current}">${this.props.current}</a>`;
+  	let first = this.createStep("1");
   	let last = this.createStep(this.state.totalPages);
 
   	let paginationIndex = [];
-  	if(this.state.currentPage == 1){
+  	if(this.props.current == 1){
   		paginationIndex.push(current);
   	}else{
   		paginationIndex.push(first);
   	}
 
-  	let before = parseInt(this.state.currentPage)-1;
+  	let before = parseInt(this.props.current)-1;
   	if(before > 1){
 		let beforeCurrent = this.createStep(before);
 		paginationIndex.push(beforeCurrent);
   	}
 
-	if(this.state.currentPage != 1){
+	if(this.props.current != 1){
   		paginationIndex.push(current);
   	}
 
-  	let next = parseInt(this.state.currentPage)+1;
+  	let next = parseInt(this.props.current)+1;
 
   	if(next < this.state.totalPages){
   		let afterCurrent = this.createStep(next);
   		paginationIndex.push(afterCurrent);
   	}
 
-	if(this.state.currentPage !== this.state.totalPages 
+	if(this.props.current !== this.state.totalPages 
       && this.state.totalPages > 1){
   		paginationIndex.push(last);
   	}
