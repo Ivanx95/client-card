@@ -57,15 +57,8 @@ export default class RouterComponent{
 	  seeBrands:{
 	    controller: BrandTableComponent,
 	    id: 'companies'
-	  },
-	  payment:{
-	    controller: PaymentComponent,
-	    id: 'payment'
-	  }/*,  
-	  clients:{
-	    controller: AdminClientComponent,
-	    id: 'clients'
-	  }*/
+	  }
+	  
 	};
 this.currentComponent = this.nestedComponents.actionButtons;
 }

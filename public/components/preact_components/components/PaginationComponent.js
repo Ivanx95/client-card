@@ -47,11 +47,12 @@ export default class PaginationComponent extends Component {
   	let next = parseInt(this.state.currentPage)+1;
 
   	if(next < this.state.totalPages){
-		let afterCurrent = this.createStep(next);
-		paginationIndex.push(afterCurrent);
+  		let afterCurrent = this.createStep(next);
+  		paginationIndex.push(afterCurrent);
   	}
 
-	if(this.state.currentPage !== this.state.totalPages && this.state.totalPages != 0){
+	if(this.state.currentPage !== this.state.totalPages 
+      && this.state.totalPages > 1){
   		paginationIndex.push(last);
   	}
 
