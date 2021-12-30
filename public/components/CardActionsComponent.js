@@ -28,14 +28,7 @@ export default class CardActionsComponent extends BaseComponent{
     this.uiElements.redemBtn.el.addEventListener('click', ()=>{
       this.callBack('rS');
     });
-
-   document.onkeyup = (e) =>{
-      if (e.ctrlKey && e.key == 'c') {
-        this.callBack('f');
-      } else if (e.ctrlKey && e.key == 'b') {
-        this.callBack('rS');
-      }
-    }
+   
   }
 
   getCreditBtn(){
