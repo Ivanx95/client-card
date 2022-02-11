@@ -12,60 +12,62 @@ import RedeemQRReaderComponent from "./form_scanning/RedeemQRReaderComponent.js"
 import PaymentComponent from "./payment/PaymentComponent.js";
 import DomUtils from "../utils/DomUtils.js";
 import konsole from "../utils/Utils.js";
-
-
-
+import {AlertModal} from "./authorization/AlertComponent.js"
+import { h, Component, render } from 'preact';
+import html from "../components/preact_components/utils/html.js";
+import {SELECTED_BRAND, RIDE_DONE} from "../../shared/constants/constants.js"
 export default class RouterComponent{
 	constructor(container) {
    this.container = container;
+   
    this.uiElements = {
     routerEl:{id:"#router"},
-  };
+    };
 
-  this.defaultController = {
-   controller:CardActionsComponent, 
-   id:'home'
- };
 
- this.outSideElements={ addCompany:{ id:"#addCompanyA"},
- home: {id:"#home"}};
- this.state={};
+    this.defaultController = {
+     controller:CardActionsComponent, 
+     id:'home'
+   };
 
- this.nestedComponents = {
-	  form:{ 
-	    controller:FormScannerComponent,
-	    id:'f'
-	  },
-	  actionButtons: this.defaultController,
-	scanner:{
-	   controller:QrReaderComponent, 
-	   id:'s'
-	 },
-   redeemScanner:{
+   this.outSideElements={ addCompany:{ id:"#addCompanyA"},
+   home: {id:"#home"}};
+   this.state={};
+
+   this.nestedComponents = {
+     form:{ 
+       controller:FormScannerComponent,
+       id:'f'
+     },
+     actionButtons: this.defaultController,
+     scanner:{
+      controller:QrReaderComponent, 
+      id:'s'},
+      redeemScanner:{
      controller:RedeemQRReaderComponent, 
-     id:'rS'
-   },
-	 seeTemplates: {
-	   controller: CardTemplateViewerController,
-	   id: 'seeT'
-	 },
+     id:'rS'},
+     seeTemplates: {
+      controller: CardTemplateViewerController,
+      id: 'seeT'},
 
-	 addBrand:{
-	  controller: AddBrandComponent,
-	  id: 'add'
-	  },
-	  seeBrands:{
-	    controller: BrandTableComponent,
-	    id: 'companies'
-	  }
-	  
-	};
-this.currentComponent = this.nestedComponents.actionButtons;
+    addBrand:{
+     controller: AddBrandComponent,
+     id: 'add'
+    },
+    seeBrands:{
+     controller: BrandTableComponent,
+     id: 'companies'
+    }
+
+    };
+    this.currentComponent = this.nestedComponents.actionButtons;
 }
 
 
-  init(){
-     for (let key in this.uiElements) {
+init(){
+   
+
+    for (let key in this.uiElements) {
       this.uiElements[key].el = this.container.querySelector(this.uiElements[key].id);
     }
 
@@ -75,8 +77,8 @@ this.currentComponent = this.nestedComponents.actionButtons;
     }
 
     window.onhashchange = ()=>{
-        let hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        this.onChange(hash);
+              let hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+              this.onChange(hash);
     }
     let hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
     if(hash){
@@ -85,6 +87,27 @@ this.currentComponent = this.nestedComponents.actionButtons;
       this.onChange('home');    
     }
 
+
+    let myStorage = window.localStorage;
+    let rideDone = myStorage.getItem(RIDE_DONE);
+
+    if(rideDone != undefined && rideDone == "false"){
+      return;
+    }
+
+    let selectedCompanyStr = myStorage.getItem(SELECTED_BRAND);
+    
+
+    if(!selectedCompanyStr){
+      AlertModal.clearContent();
+      render(html `<p>Seleccione su empresa</p>`,AlertModal.getContent());
+      AlertModal.show(()=>{
+        AlertModal.hide();
+        this.onChange('companies');  
+       });
+      
+    }
+    
   }
 
   onChange(id, state){

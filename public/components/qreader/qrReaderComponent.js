@@ -1,12 +1,16 @@
 import html from "./qrReaderComponent-ui.html";
 import BaseComponent from "../base_component/BaseComponent.js";
 import requests from "../../api/request.js"
+import DomUtils from "../../utils/DomUtils.js";
+import {SELECTED_BRAND} from "../../../shared/constants/constants.js";
 export default class qrReaderComponent extends BaseComponent{
 
  constructor({container, state, callBack}) {
     super(container, html);
     this.state = state;
     this.callback = callBack;
+    this.uiElements = {cardCodeInput:{id:"#cardCodeInput"}};
+    this.uidFormat=15;
   }
 
   
@@ -14,15 +18,47 @@ export default class qrReaderComponent extends BaseComponent{
     this.canvas.hidden = true;
     console.log(`Found ${uuid}`);
     console.log(this.state);
-    let operatorId = window.localStorage.getItem("userId");
-    requests.credit(operatorId,uuid,this.state.total,(data)=>{
+    let myStorage = window.localStorage;
+    let selectedCompanyStr = myStorage.getItem(SELECTED_BRAND);
+
+    if(selectedCompanyStr){
+      let selectedCompany = JSON.parse(selectedCompanyStr);
+      requests.credit(selectedCompany.brandId,uuid,this.state.total,(data)=>{
         console.log("Credit gave it successfully");
         alert(`Credit: ${data.points}  gave it successfully`);
         this.callback('a');
     });
+    }
+    
    }
 
   init(){
+   super.init();
+   let count =  0;
+   let cardCodeInput = this.uiElements.cardCodeInput.el;
+   
+   super.addForm("formAction",this.uiElements.cardCodeInput);
+
+   cardCodeInput.focus();
+   cardCodeInput.addEventListener('blur', e => {
+      setTimeout(()=>{ this.uiElements.cardCodeInput.el.focus()}, 1);
+    });
+   
+    cardCodeInput.addEventListener("keyup",(event)=>{
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        //event.preventDefault();
+        
+        //super.block("formAction");
+        this.codeFound(cardCodeInput.value.trim());
+
+      }
+        super.clearAll("formAction");
+      
+    });
+
+
    var state = this.state;
    var callback = this.callback;
    var video = document.createElement("video");
@@ -66,7 +102,7 @@ export default class qrReaderComponent extends BaseComponent{
           outputMessage.hidden = true;
           outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
-          that.codeFound(code.data);
+              that.codeFound(code.data.trim());
           stopVideoOnly(video.srcObject);
           return;
         } else {
