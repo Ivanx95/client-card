@@ -16,7 +16,7 @@ function html(){
 				<div class="field" for="emailInput">
 					<label class="label" for="emailInput">Usuario</label>
 					<div class="control">
-						<input autofocus=true class="input" name="email" id="emailInput" type="text" placeholder="Ingrese su usuario">
+						<input autofocus=true class="input"  name="email" id="emailInput" type="text" placeholder="Ingrese su usuario">
 					</div>
 				</div>
 				<div class="field">

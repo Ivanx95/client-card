@@ -1,23 +1,38 @@
 
-	
-	<div class="columns">
-		<div class="column"></div>
-		<div class="column is-three-fifths">
-			<div class="box">
-				<section class="section">
-					<div class="container has.-text-center">
-						<canvas id="canvas" hidden/>
-					</div>
-				</section>
-				<div id="output" hidden>
-					<div id="outputMessage">No QR code detected.</div>
-					<div hidden>
-						<b>Data:</b><span id="outputData"></span>
-					</div>
+
+<div class="columns">
+	<div class="column"></div>
+	<div class="column is-three-fifths">
+		<div class="box" >
+			<p class="title">
+				Escanee el código QR del cliente
+			</p>
+			<section class="section">
+				<div class="container has.-text-center">
+					<canvas id="canvas" hidden/>
+				</div>
+			</section>
+			<div id="output" hidden>
+				<div id="outputMessage"> </div>
+				<div hidden>
+					<b>Data:</b><span id="outputData"></span>
 				</div>
 			</div>
+			<div class="columns">
+				<div class="column">
+					<div class="field" for="cardCodeInput">
+						<label  class="label" for="cardCodeInput">O ingrese el código </label>
+						<div class="control">
+							<input type="text" class="input" id="cardCodeInput" name="cardCodeInput" autofocus="true" />
+						</div>
+					</div>
+				</div>
+				<div class="column is-half"></div>
+			</div>
+
 		</div>
-		<div class="column"></div>
-		
 	</div>
-	
+	<div class="column"></div>
+
+</div>
+

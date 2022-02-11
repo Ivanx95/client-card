@@ -6,7 +6,17 @@
   width: 1px;
 }
 
+.print-on-normal{
+	display: none;
+}
 	
 .fa:hover{
 	color:#00ff00 !important;; 
+}
+
+.cell{
+	border:0;
+	border-collapse:collapse;
+	margin:0;
+	-webkit-print-color-adjust: exact; 
 }

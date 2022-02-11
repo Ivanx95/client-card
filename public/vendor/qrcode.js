@@ -239,25 +239,27 @@ var QRCode;
 			var nCount = oQRCode.getModuleCount();
 			var nWidth = Math.floor(_htOption.width / nCount);
 			var nHeight = Math.floor(_htOption.height / nCount);
-			var aHTML = ['<table style="border:0;border-collapse:collapse;" margin:0; id="qrElement">'];
+			var aHTML = ['<table style="border:0;border-collapse:collapse; margin:0;" id="qrElement">'];
 			
 			var drawCell = function(width, height, color){
-				return '<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:' + width + 'px;height:' + height + 'px;background-color:' + color + ';"></td>'
+				let style = `width: ${width}px; height:${height}px; background-color:${color}`;
+				return `<td style="${style}" class="cell"></td>`
 			}
 
-				let imageHtml = `<img src="${_htOption.logo}">`
-				
-				let offset = Math.floor(nCount/2);
+			let imageHtml = `<img src="${_htOption.logo}" style="width:${nWidth*6}px; height:${nHeight*6}px;"/>`
+			
+			let offset = Math.floor(nCount/2);
 
-				let nCountIndexMax=offset+4;
-				let nCountIndexMin=offset-4;
+			let nCountIndexMax=offset+4;
+			let nCountIndexMin=offset-4;
 			for (var row = 0; row < nCount; row++) {
 				aHTML.push('<tr>');
 				for (var col = 0; col < nCount; col++) {
 					if((row>=nCountIndexMin && row<nCountIndexMax)){
 						if(col>=nCountIndexMin && col<nCountIndexMax){
 							if(row==nCountIndexMin&&col==nCountIndexMin){
-							 	aHTML.push('<td style="border:0;border-collapse:collapse;padding:5px;margin:0;width:' + nWidth + 'px;height:' + nHeight + 'px;background-color:#ffffff;" colspan="8" rowspan="8">'+imageHtml+'</td>');
+								let style = `padding:5px;background-color:#ffffff;`;
+							 	aHTML.push(`<td style="${style}" colspan="8" rowspan="8" class="cell">${imageHtml}</td>`);
 							 	console.log("Creating logo html table cell");
 							}
 						}else{
@@ -277,9 +279,9 @@ var QRCode;
 			_el.innerHTML = aHTML.join('');
 			
 			// Fix the margin values as real size.
-			var elTable = _el.childNodes[0];
-			var nLeftMarginTable = (_htOption.width - elTable.offsetWidth) / 2;
-			var nTopMarginTable = (_htOption.height - elTable.offsetHeight) / 2;
+			let elTable = _el.childNodes[0];
+			let nLeftMarginTable = (_htOption.width - elTable.offsetWidth) / 2;
+			let nTopMarginTable = (_htOption.height - elTable.offsetHeight) / 2;
 			elTable.style.margin = "auto";
 			
 		};
@@ -404,7 +406,7 @@ var QRCode;
 			async function waitImage(ctx, image, x,y, height, width){
 			    return new Promise(resolve => {
 			          img.onload = function () {
-			                ctx.drawImage(image, x+5,y+5, (height*7)-5,(width*7)-5);
+			                ctx.drawImage(image, x+5,y+5, (height*6)-5,(width*6)-5);
 			                resolve('resolved');
 			             }
 

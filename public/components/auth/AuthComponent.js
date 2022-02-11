@@ -3,8 +3,9 @@ import html from "./AuthComponent-ui.js";
 import BaseComponent from "../base_component/BaseComponent.js";
 import _validate from "../../../shared/ValidationUtils.mjs";
 import UserConstrains from "../../../shared/UserConstrains.mjs";
+import DomUtils from "../../utils/DomUtils.js";
 
-export default class CardActionsComponent extends BaseComponent{
+export default class AuthComponent extends BaseComponent{
 
   constructor(container) {
   	super(container, html());
@@ -16,12 +17,26 @@ export default class CardActionsComponent extends BaseComponent{
     super.addForm("formAction",this.uiElements.loginBtn);
     super.addForm("formInput",this.uiElements.emailInput);
     super.addForm("formInput",this.uiElements.passwordInput);
+
+
   }
 
   init(){
   	super.init();
   	let loginBtn = this.uiElements.loginBtn;
     
+
+    this.uiElements.passwordInput.el.addEventListener("textinput",(event)=>{
+      console.log("testing on input")
+     
+    });
+
+    DomUtils.addEnterHandler(
+      this.uiElements.passwordInput.el,
+      ()=>this.uiElements.loginBtn.el.click(), 
+      true);
+    
+
     loginBtn.el.addEventListener('click', ()=>{
         if(this.hasError){
           super.clearAll("formInput");  
