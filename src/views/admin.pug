@@ -4,7 +4,7 @@ extends baseHomePages.pug
 block menuItems
 	a(class="navbar-item" id="addCompanyA" href="#companies") Empresas
 
-	a(class="navbar-item" id="payment" href="#payment") Pagos
+	
 
 block content
 	div(id="mainModule-ui")
@@ -13,7 +13,7 @@ block content
 
 block js
 	script(type="text/javascript" src="vendor/qrReader.js")
-	script(type="module" src="administrator.js")
+	script(type="module" src="dist/administrator.js")
 	script(type='text/javascript').
 		(function(d,z,s){s.src='//'+d+'/400/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('rndhaunteran.com',4516393,document.createElement('script'))
 	
