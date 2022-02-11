@@ -226,9 +226,12 @@ resize(event,  fileInput,that){
               }
 
               init(){
-                  let that = this;
+                let that = this;
                 
-                  this.uiElements[key].el = this.container.querySelector(this.uiElements[key].id); 
+                for (let key in this.uiElements) {
+                    let keyEl = this.uiElements[key];
+                    
+                    this.uiElements[key].el = this.container.querySelector(this.uiElements[key].id); 
                    
                   let el =    this.uiElements[key].el;
                   this.htmlDecorators.forEach(decorator=>{
