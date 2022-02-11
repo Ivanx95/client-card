@@ -80,7 +80,7 @@ export default class AdminClientcomponent extends Component  {
 	}
 
 
-	go(brandId, page){
+	go(brandId, page, tabSelected){
 		let go = ()=> this.go(brandId, page);
 		let goToPage = (page)=> this.go(brandId, page);
 
@@ -91,9 +91,9 @@ export default class AdminClientcomponent extends Component  {
 
 		let pageSize = 3;
 
-		requests.getClientsByBrand((response)=>{
+		const onGetCardsReponse = (response)=>{
 
-			let pagination = html `<${PaginationComponent} 
+			let paginationRegiseredUsers = html `<${PaginationComponent} 
 									go="${goToPage}" 
 									pageSize=${pageSize} 
 									total=${response.total}
@@ -109,27 +109,53 @@ export default class AdminClientcomponent extends Component  {
 					 					rows="${clients}"
 					 					that="${this}"
 					 					brandId="${brandId}"/>
-			 				 ${pagination}
+			 				 ${paginationRegiseredUSers}
 		 				 </div>`,
 		 		this.container);	
-	    },brandId,pageSize, (page-1)*pageSize);
+	    };
+
+	    if(tabSelected==1){
+	    	requests.getClientsByBrand( onGetCardsReponse,{brandId, limit:pageSize, page:(page-1)*pageSize});	
+	    }
+		
 	}
 
-	init(brandId){
+	init(brandId, tabSelected){
 
 		
 		let goToPage = (page)=> this.go(brandId, page);
 		let refresh = ()=> this.init(brandId);
 
+		let changeTabe1 = ()=> this.init(brandId, 1);
+		let changeTabe2 = ()=> this.init(brandId, 2);
+		
+		let isActive1 = tabSelected==1?'is-active':'';
+		let isActive2 = tabSelected==2?'is-active':'';
+
+		let li1 =tabSelected==1?{className: 'is-active'}:{onClick: changeTabe1};
+		let li2 =tabSelected==2?{className: 'is-active'}:{onClick: changeTabe2};
+		let h1 =  h ('div',{className:"tabs is-boxed"},html `
+						  <ul>
+						    ${h('li', li1,
+						      html `<a>
+						        <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
+						        <span>Usuarios</span>
+						      </a>`)}
+						    ${h('li', li2,
+						      html `<a>
+						        <span class="icon is-small"><i class="fas fa-address-card" aria-hidden="true"></i></span>
+						        <span>Tarjetas Rapidas</span>
+						      </a>`)}
+						  </ul>`);
+		
 		let iconRefresh = 
 							h('a', {className:"pagination-next", onClick :refresh},
 							["Actualizar", h('span', {className : "icon-text  has-text-success is-clickable" },
 								html `<i class="fas fa-refresh"></i>`)]);
 		let pageSize = 3;
 		
-
-		requests.getClientsByBrand((response)=>{
-
+		const onGetCardsReponse = (response)=>{
+			console.log("On cards response");
 			let pagination = html `<${PaginationComponent} 
 									go="${goToPage}" 
 									pageSize=3
@@ -137,18 +163,29 @@ export default class AdminClientcomponent extends Component  {
 									current=1>${iconRefresh}</${PaginationComponent}>`;
 	    	let clients = response.hits;
 	 
-			render(html`<div class="table-container">
-			 				<span class="title">Tarjetas afiliadas</span>
-			 				<div id="modal"></div>
-						 	<${this.TableComponent} 
-						 				columns="${clientColumns}"
-					 					rows="${clients}"
-					 					that="${this}"
-					 					brandId="${brandId}"/>
-			 				 ${pagination}
-		 				 </div>`,
+			render(html`<section class="section">
+						<span class="title">Tarjetas afiliadas</span>
+		 				${h1}
+						<div class="table-container">
+					 				
+					 				<div id="modal"></div>
+								 	<${this.TableComponent} 
+								 				columns="${clientColumns}"
+							 					rows="${clients}"
+							 					that="${this}"
+							 					brandId="${brandId}"/>
+					 				 ${pagination}
+		 				 </div>
+		 				 </section>`,
 		 		this.container);	
-	    },brandId, pageSize)
+	    }
+
+	    if(tabSelected==1){
+	    	requests.getClientsByBrand(onGetCardsReponse,{brandId, limit:pageSize})	
+	    }else{
+			requests.getClientsByBrand(onGetCardsReponse,{brandId, limit:pageSize, type:'FAST'})	
+	    }
+		
 	
 	}
 

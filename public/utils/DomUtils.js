@@ -46,6 +46,26 @@ function removeAllChildNodes(parent) {
     }
 }
 
+/**
+ * [Remove all children from node]
+ * @param  {[type]} parent [description]
+ * @return {[type]}        [description]
+ */
+function addEnterHandler(el, callBack, cancelDefault) {
+    el.addEventListener("keyup",(event)=>{
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        if(cancelDefault){
+        	event.preventDefault();
+        }
+        // Trigger the button element with a click
+        callBack.call();
+      }
+    });
+}
+
+
 const _createAppend = curry(createAppend);
 
 function createRows(rows){
@@ -121,6 +141,15 @@ function toggleElement (p, flag, el){
 	  	}
 }
 
+function printElem(values){
+    let mywindow = window.open('assets/qr.html#'+values, 'PRINT', 'height=400,width=600');
+	mywindow.focus(); // necessary for IE >= 10*/
+	
+	//mywindow.onfocus=function(){ mywindow.close();}
+    
+    return true;
+}
+
 const DomUtils = {};
 
 DomUtils.removeAllChildNodes = removeAllChildNodes;
@@ -133,4 +162,7 @@ DomUtils.createRows = createRows;
 DomUtils.createAppend = createAppend;
 DomUtils._createAppend = _createAppend;
 DomUtils.configurePasswordInput = configurePasswordInput;
+DomUtils.addEnterHandler = addEnterHandler;
+DomUtils.printElem = printElem;
+
 export default DomUtils;
