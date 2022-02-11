@@ -1,4 +1,5 @@
 
+import BadRequestError from "../../shared/errors/BadRequestError.js";
 const basePath = "/api";
 const cardPath = basePath+"/cards";
 
@@ -55,8 +56,9 @@ function disableCard(cardId,brandId,callBack){
 }
 
 
-function getClientsByBrand(callBack, brandId, limit=10 ,page = 0 ){
-	fetch(`${cardPath}/clients/brand/${brandId}?limit=${limit}&offset=${page}`)
+function getClientsByBrand(callBack, params){
+	let {brandId, limit=10, page=0, type = 'CLIENT'} = params;
+	fetch(`${cardPath}/clients/brand/${brandId}?limit=${limit}&offset=${page}&type=${type}`)
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
@@ -64,6 +66,7 @@ function getClientsByBrand(callBack, brandId, limit=10 ,page = 0 ){
 		});
 }
 
+//TODO: delete
 function findCards(uuid,opID,callBack){
 
 	let body =  JSON.stringify( {operatorID:opID});
@@ -89,9 +92,9 @@ function findCards(uuid,opID,callBack){
 
 
 
-function redeem(ownerId, uuid,callBack){
+function redeem(brandId, uuid,callBack){
 
-	let body =  JSON.stringify( {ownerId:ownerId});
+	let body =  JSON.stringify( {brandId:brandId});
 	const headers = new Headers({
 	    "Content-Type": "application/json",
 	    "Content-Length": JSON.stringify(body).length
@@ -109,9 +112,9 @@ function redeem(ownerId, uuid,callBack){
 	});
 }
 
-function calculateRedeem(ownerId, uuid,callBack){
+function calculateRedeem(brandId, uuid,callBack, error){
 
-	let body =  JSON.stringify( {ownerId:ownerId});
+	let body =  JSON.stringify( {brandId:brandId});
 	const headers = new Headers({
 	    "Content-Type": "application/json",
 	    "Content-Length": JSON.stringify(body).length
@@ -124,16 +127,28 @@ function calculateRedeem(ownerId, uuid,callBack){
 	};
 
 	fetch(`/api/transactions/redeem/${uuid}/calculate`,options)
-	.then(response => response.json())
+	.then(response => {
+		if(response.status==200)
+		{
+		    return response.json();
+		}
+		else if(response.status == 401) {
+			 throw Error("Permision denied");
+		}else{
+			throw new BadRequestError("General Service Error", response);
+		}
+	})
 	.then((data) => {
 		callBack(data);
-	});
+	})
+	.catch(e=>error(e));
+
 }
 
 
 function credit(opID, uuid,totalSale,callBack){
 
-	let body =  JSON.stringify( {totalSale:totalSale,ownerId:opID});
+	let body =  JSON.stringify( {totalSale:totalSale,brandId:opID});
 	const headers = new Headers({
 	    "Content-Type": "application/json",
 	    "Content-Length": JSON.stringify(body).length
