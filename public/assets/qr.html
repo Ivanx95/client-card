@@ -1,0 +1,69 @@
+<html lang="es-MX,es;q=0.9,en;q=0.8,es-419;q=0.7">
+<head>
+	<meta charset="UTF-8">
+	<meta name="propeller" content="147a24251dc96fa33a270f363b73aff8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Point card</title>
+	<link rel="icon" href="assets/logo_small.png" type="image/png">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+	<link rel="stylesheet" href="/main.css">
+	<link rel="stylesheet" href="/toolTip.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+	<script src="/utils/stringUtils.js" type="module"></script>
+	<script type="text/javascript" src="/vendor/qrcode.js"></script>
+	<section class="section" id="qrHolder">	
+		<div class="container" id="qrImage"></div>
+		<div class="container has-text-centered">
+			<p>Escanea este código para subscribirte a</p>
+			<p  id="printMessage"></p>
+		</div>
+	</section>
+
+
+
+	<script>
+
+		function qRSizes(pageWidth){
+			if(pageWidth<200){
+				return 150;
+			}else if(pageWidth >200 && pageWidth < 500){
+				return pageWidth-50;
+			}else{
+				return 500;
+			}
+		}
+
+		
+		let hash = decodeURI(window.location.hash.substring(1)); //Puts hash in variable, and removes the # character
+		let params = JSON.parse(hash);
+		const {color, value, logo, brandName}= params;
+		
+
+		let pageWidth = document.body.clientWidth;
+		let width, height;
+		width = height = this.qRSizes(pageWidth);
+
+		let qrComponent = document.querySelector("#qrImage");				
+		let printMessage = document.querySelector("#printMessage");
+		let qrcode = new QRCode(qrComponent, {
+			width : width,
+			height : height,
+			colorDark: color,
+			logo: `/${logo}`
+		});
+
+		printMessage.innerHTML = `a la tarjeta de puntos de ${escape(brandName)}`;
+		qrcode.makeCode(value);
+
+
+
+		window.print();
+		setTimeout(window.close, 1000);
+
+
+
+	</script>
+</body>
+</html>
