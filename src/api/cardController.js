@@ -37,6 +37,30 @@ const includeUntilBrand = [{
 						    	}]
 						   }];
 
+const findCardByUUIDAndBrandAndOwner = (cardId, brandId, ownerId)=>{
+	return Card.findAll({
+			  where: {
+			    value: cardId,
+			  },
+			  include: [
+				{
+				    model: dataSource.models.CardTemplate,
+				    as: 'template',
+				    required: true,
+				    where : {BRAND_ID: brandId},
+				    include: [
+				    {
+				    	model: dataSource.models.Brand,
+				    	as:'brand',
+				    	required :true,
+				    	where:{
+				    		USER_ID: ownerId
+				    	}
+				    }]
+				}]}
+			);
+}
+
 const findCardByUUIDAndOwner = (cardId, ownerId)=>{
 	return Card.findAll({
 			  where: {
@@ -123,6 +147,7 @@ apiRouter.get(`${path}/clients/brand/:brandId`,function(req, res) {
 	let brandId = req.params.brandId;
 	let limit =  req.query.limit;
 	let offset =  req.query.offset;
+	let type =  req.query.type || 'CLIENT';
 
 	Logger.log({level:"info",message:"Request on get clients by brand"});
 
@@ -139,6 +164,7 @@ apiRouter.get(`${path}/clients/brand/:brandId`,function(req, res) {
 				  	  INNER JOIN BRAND
 					  	on BRAND.BRAND_ID = CARD_TEMPLATE.BRAND_ID
 			  		  WHERE BRAND.BRAND_ID = :brandId
+			  		  and USR.USER_TYPE_CD = :type
 			  		  GROUP BY CARD.CARD_ID, USR.NAME, CARD.POINTS, CARD.ENABLE 
 			  		  ${limit? "LIMIT  "+limit: ""}
 			  		  ${offset? "OFFSET "+offset: ""}
@@ -146,7 +172,7 @@ apiRouter.get(`${path}/clients/brand/:brandId`,function(req, res) {
 	  {model: User,
 	   mapToModel: true,
 	   type: dataSource.QueryTypes.SELECT,
-	   replacements: { brandId: brandId} 
+	   replacements: { brandId: brandId, type:type} 
 	  })
 	  .then(users=>{
 				dataSource.query(`Select count(CARD.CARD_ID) as total 
@@ -165,6 +191,7 @@ apiRouter.get(`${path}/clients/brand/:brandId`,function(req, res) {
 	  });
 });
 
+//TODO: delete
 apiRouter.post(`${path}/:uuid`,function(req, res) {
 	let uuid = req.params.uuid;
 	console.log(`Request on get request with uuid ${uuid}`);
@@ -189,12 +216,14 @@ apiRouter.post(`${path}/:uuid`,function(req, res) {
 apiRouter.post("/transactions/credit/:cardId",function(req, res) {
 			Logger.log({level:"info",message:"Request of transaction"});
 			let uuid = req.params.cardId;
-			let ownerId = req.body.ownerId;
+			let brandId = req.body.brandId;
 
 			Logger.log({level:"info",message:JSON.stringify(req.body)});
 			let totalSale = req.body.totalSale;
 
-			findCardByUUIDAndOwner(uuid, ownerId)
+			let user = req.session.user;
+   				
+			findCardByUUIDAndBrandAndOwner(uuid, brandId, user.id)
 			.then((cards)=> transformCards(cards))
 			.then((cards)=>{
 				
@@ -214,7 +243,7 @@ apiRouter.post("/transactions/credit/:cardId",function(req, res) {
 						res.status(200).send({points:points});
 					});
 				}else{
-					res.status(405).send({error:"No cards found belonging to this operators"});
+					res.status(405).send({error:"No cards found belonging to this brand"});
 					return;
 				}
 			});
@@ -228,16 +257,16 @@ apiRouter.route("/transactions/redeem/:cardId/calculate")
 						message:"Request of calculation"});
 
 			let uuid = req.params.cardId;
-			let ownerId = req.body.ownerId;
-
+			let brandId = req.body.brandId;
+			let user = req.session.user;
 			console.log(req.body);
-			calculatePointsToSubstract(ownerId,uuid)
+			calculatePointsToSubstract(brandId,uuid, user.id)
 			.then(({money, noResult})=>{
 				if(noResult){
-					res.status(405).send({error:"No cards found belonging to this operators"});
+					res.status(400).send({error:"No cards found belonging to this operators"});
+					return;
 				}
 
-				
 				Logger.log({level: "info", message: `Money got: ${money}`})
 				res.status(200).send({total:money});
 			})
@@ -251,10 +280,10 @@ apiRouter.route("/transactions/redeem/:cardId")
 						message:"Request of redemption"});
 
 			let uuid = req.params.cardId;
-			let ownerId = req.body.ownerId;
-
+			let brandId = req.body.brandId;
+			let user = req.session.user;
 			
-			calculatePointsToSubstract(ownerId,uuid)
+			calculatePointsToSubstract(brandId,uuid, user.id)
 			.then(({money, noResult,card})=>{
 				
 				if(noResult){
@@ -281,6 +310,7 @@ apiRouter.route("/transactions/redeem/:cardId")
 
 
 
+//TODO: delete
 function calculatePointsToAdd(operatorID, cardId, saleTotal){
 	console.log(`Operatorid: ${operatorID}`);
 	return findCardByUUIDAndOwner(cardId, operatorID)
@@ -296,9 +326,11 @@ function calculatePointsToAdd(operatorID, cardId, saleTotal){
 }
 
 
-function calculatePointsToSubstract(operatorID, cardId){
-	console.log(`Operatorid: ${operatorID}`);
-	return findCardByUUIDAndOwner(cardId,operatorID)
+function calculatePointsToSubstract(brandId, cardId, userId){
+	console.log(`Brand id: ${brandId}`);
+	
+			
+	return findCardByUUIDAndBrandAndOwner(cardId, brandId, userId)
 				.then((cards)=> transformCards(cards))
 				.then((cards)=>{
 					console.log(`Cards: ${cards}`);
